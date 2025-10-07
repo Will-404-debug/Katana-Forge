@@ -1,0 +1,43 @@
+{
+  "name": "katana-forge",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:apply": "prisma db execute --file prisma/migrations/0001_init/migration.sql --schema prisma/schema.prisma",
+    "db:resolve": "prisma migrate resolve --applied 0001_init",
+    "db:init": "node scripts/db-init.mjs"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.16.3",
+    "@react-three/drei": "^9.97.0",
+    "@react-three/fiber": "^8.15.16",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "next": "^14.2.33",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "^0.165.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.2.1",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20.11.30",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.33",
+    "postcss": "^8.4.38",
+    "prisma": "^6.16.3",
+    "tailwindcss": "^3.4.3",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
