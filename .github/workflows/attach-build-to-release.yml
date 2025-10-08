@@ -1,0 +1,36 @@
+name: Attach build to Release
+on:
+  release:
+    types: [published]
+
+jobs:
+  attach-build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Archive build
+        run: |
+          mkdir -p dist
+          tar -czf dist/katana-forge-${{ github.event.release.tag_name }}.tar.gz \
+            .next next.config.js package.json package-lock.json prisma public
+
+      - name: Upload asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.release.tag_name }}
+          files: dist/katana-forge-${{ github.event.release.tag_name }}.tar.gz
