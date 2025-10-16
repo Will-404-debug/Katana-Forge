@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/Will-404-debug/Katana-Forge/compare/v1.1.0...v1.1.1) (2025-10-16)
+
+
+### Bug Fixes
+
+* **text typo:** Fix typos through all texts ([eb85422](https://github.com/Will-404-debug/Katana-Forge/commit/eb854222c918aade78c7fe84d49f277507339ee1))
+
 ## [1.1.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.0.0...v1.1.0) (2025-10-13)
 
 
