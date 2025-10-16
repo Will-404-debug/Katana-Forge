@@ -4,10 +4,10 @@ import dynamic from "next/dynamic";
 const HeroParticles = dynamic(() => import("@/components/home/HeroParticles"), { ssr: false });
 
 const featureItems = [
-  "Configurateur 3D temps reel propulse par React Three Fiber",
-  "Palette chromatique inspiree des forges nippones",
-  "Controle precis du metalness, de la roughness et des teintes",
-  "API de devis instantane motorisee par Prisma",
+  "Configurateur 3D temps réel propulsé par React Three Fiber",
+  "Palette chromatique inspirée des forges nippones",
+  "Contrôle précis du metalness, de la roughness et des teintes",
+  "API de devis instantané motorisée par Prisma",
 ];
 
 export default function HomePage() {
@@ -29,7 +29,7 @@ export default function HomePage() {
             </h1>
             <p className="max-w-2xl text-sm leading-relaxed text-white/70 md:text-base">
               Un configurateur 3D immersif ou la tradition rencontre la technologie. Ajustez lame, garde et tsuka,
-              observez la matiere reagir aux braises et obtenez un devis instantane sans quitter la page.
+              observez la matière réagir aux braises et obtenez un devis instantané sans quitter la page.
             </p>
           </div>
 
@@ -49,10 +49,10 @@ export default function HomePage() {
 
       <section className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-[1.4fr_1fr] md:items-start">
         <div className="space-y-6 rounded-3xl border border-white/10 bg-black/40 p-8 text-white/70 backdrop-blur">
-          <h2 className="text-sm font-heading uppercase tracking-[0.4em] text-emberGold">Forge numerique</h2>
+          <h2 className="text-sm font-heading uppercase tracking-[0.4em] text-emberGold">Forge numérique</h2>
           <p className="text-sm leading-relaxed text-white/60 md:text-base">
-            Katana Forge reunit Next.js 14, React Three Fiber et TailwindCSS pour livrer une experience fluide et
-            responsive. Chaque interaction retranscrit la precision d une forge artisanale tout en restant pilotable
+            Katana Forge réunit Next.js 14, React Three Fiber et TailwindCSS pour livrer une expérience fluide et
+            responsive. Chaque intéraction retranscrit la précision d'une forge artisanale tout en restant pilotable
             depuis un navigateur moderne.
           </p>
           <ul className="grid gap-3 text-sm text-white/70 md:max-w-lg">
@@ -74,13 +74,13 @@ export default function HomePage() {
         >
           <h3 className="text-sm font-heading uppercase tracking-[0.45em] text-emberGold">Stack technique</h3>
           <p className="text-white/50">
-            Un socle moderne pret a l emploi : API serverless, Prisma, auth JWT et assets 3D optimises.
+            Un socle moderne prêt à l'emploi : API serverless, Prisma, auth JWT et assets 3D optimisés.
           </p>
           <div className="space-y-3 text-white/60">
             <p>Next.js 14 • App Router</p>
             <p>TypeScript • React 18</p>
             <p>React Three Fiber • Drei</p>
-            <p>TailwindCSS personnalise</p>
+            <p>TailwindCSS personnalisé</p>
             <p>Prisma • Zod • JWT</p>
           </div>
         </aside>

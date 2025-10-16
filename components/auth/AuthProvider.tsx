@@ -73,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           return;
         }
         const data = await parseResponse<AuthResponse>(response);
-        throw new Error(data.error ?? "Impossible de recuperer le profil");
+        throw new Error(data.error ?? "Impossible de récuperer le profil");
       }
 
       const data = (await response.json()) as AuthResponse;
@@ -140,14 +140,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (!response.ok) {
           const data = await parseResponse<AuthResponse>(response);
-          return { success: false, error: data.error ?? "Impossible de creer le compte" };
+          return { success: false, error: data.error ?? "Impossible de créer le compte" };
         }
 
         const data = (await response.json()) as AuthResponse;
         setUser(data.user);
         return { success: true };
       } catch {
-        return { success: false, error: "Impossible de creer le compte" };
+        return { success: false, error: "Impossible de créer le compte" };
       }
     },
     [],

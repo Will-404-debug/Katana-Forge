@@ -117,7 +117,7 @@ export default function AccountClient() {
         <h1 className="text-3xl font-heading uppercase tracking-[0.3em] text-white">
           Bienvenue {displayName}
         </h1>
-        <p className="text-xs text-white/60">Retrouvez vos creations et reprenez leur forge quand vous le souhaitez.</p>
+        <p className="text-xs text-white/60">Retrouvez vos créations et reprenez leur forge quand vous le souhaitez.</p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link href="/atelier/demo" className="btn-primary">
             Forger un nouveau katana
@@ -127,7 +127,7 @@ export default function AccountClient() {
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/40 p-8 text-sm text-white/80 backdrop-blur">
         <div className="flex items-center justify-between">
-          <h2 className="text-xs uppercase tracking-[0.4em] text-emberGold">Vos katanas sauvegardes</h2>
+          <h2 className="text-xs uppercase tracking-[0.4em] text-emberGold">Vos katanas sauvegardés</h2>
           <button
             type="button"
             onClick={() => {
@@ -136,7 +136,7 @@ export default function AccountClient() {
             className="rounded-full border border-white/20 px-3 py-1 text-[0.65rem] uppercase tracking-[0.3em] text-white/70 transition hover:border-emberGold hover:text-emberGold"
             disabled={loading}
           >
-            Rafraichir
+            Rafraîchir
           </button>
         </div>
 
@@ -146,8 +146,8 @@ export default function AccountClient() {
           <p className="text-xs text-white/60">Chargement de vos katanas...</p>
         ) : katanas.length === 0 ? (
           <p className="text-xs text-white/60">
-            Vous n avez pas encore de katana sauvegarde. Rendez-vous dans l atelier pour enregistrer votre premiere
-            creation.
+            Vous n'avez pas encore de katana sauvegardé. Rendez-vous dans l'atelier pour enregistrer votre première
+            création.
           </p>
         ) : (
           <ul className="grid gap-4">
@@ -159,14 +159,14 @@ export default function AccountClient() {
                 <div className="space-y-1">
                   <p className="text-sm font-semibold tracking-[0.2em] text-white/90">{katana.name}</p>
                   <p className="text-white/50">
-                    Poignee <span style={{ color: katana.handleColor }}>{katana.handleColor}</span> / Lame{" "}
+                    Poignée <span style={{ color: katana.handleColor }}>{katana.handleColor}</span> / Lame{" "}
                     <span style={{ color: katana.bladeTint }}>{katana.bladeTint}</span>
                   </p>
                   <p className="text-white/50">
                     Metalness {(katana.metalness * 100).toFixed(0)}% - Roughness {(katana.roughness * 100).toFixed(0)}%
                   </p>
                   <p className="text-white/40">
-                    Mis a jour le {new Date(katana.updatedAt).toLocaleDateString("fr-FR", { dateStyle: "medium" })}
+                    Mis à jour le {new Date(katana.updatedAt).toLocaleDateString("fr-FR", { dateStyle: "medium" })}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">

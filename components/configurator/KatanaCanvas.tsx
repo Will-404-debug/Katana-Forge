@@ -14,7 +14,7 @@ function LoadingOverlay() {
   return (
     <Html center>
       <div className="rounded-full border border-white/20 bg-black/70 px-6 py-3 text-xs uppercase tracking-[0.4em] text-white/70 backdrop-blur">
-        Chargement du modele...
+        Chargement du modèle...
       </div>
     </Html>
   );

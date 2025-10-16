@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
-const LAST_UPDATE_ISO = "2025-10-12";
-const LAST_UPDATE_LABEL = "12 octobre 2025";
+const LAST_UPDATE_ISO = "2025-10-16";
+const LAST_UPDATE_LABEL = "16 octobre 2025";
 
 export const metadata: Metadata = {
   title: "Politique de livraison | Katana Forge",
-  description: "Informations sur les modes, zones et delais de livraison des katanas Katana Forge.",
+  description: "Informations sur les modes, zones et délais de livraison des katanas Katana Forge.",
   alternates: {
     canonical: "/legal/livraison",
   },
@@ -23,44 +23,44 @@ export default function LivraisonPage() {
         <p className="text-xs uppercase tracking-[0.5em] text-emberGold">Legal</p>
         <h1 className="text-3xl font-heading uppercase tracking-[0.35em] md:text-4xl">Politique de livraison</h1>
         <p className="text-sm text-white/50">
-          Derniere mise a jour : <time dateTime={LAST_UPDATE_ISO}>{LAST_UPDATE_LABEL}</time>
+          Derniere mise à jour : <time dateTime={LAST_UPDATE_ISO}>{LAST_UPDATE_LABEL}</time>
         </p>
       </header>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/40 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Zones desservies</h2>
         <p>
-          Katana Forge livre en France metropolitaine, dans l Union europeenne et en Amerique du Nord. Pour toute autre
-          destination, un devis logistique personnalise est etabli.
+          Katana Forge livre en France métropolitaine, dans l'Union européenne et en Amerique du Nord. Pour toute autre
+          destination, un devis logistique personnalisé est établi.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
-        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Modes d expedition</h2>
+        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Modes d'expédition</h2>
         <p>
-          Les lames sont expediees via transporteur specialise, avec assurance ad valorem et remise contre signature.
-          Un numero de suivi est communique des la prise en charge.
+          Les lames sont expédiées via transporteur spécialisé, avec assurance ad valorem et remise contre signature.
+          Un numero de suivi est communiqué dès la prise en charge.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
-        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Delais indicatifs</h2>
+        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Délais indicatifs</h2>
         <ul className="space-y-2">
-          <li>France metropolitaine : 2 a 4 jours ouvrables apres expedition.</li>
-          <li>Union europeenne : 4 a 6 jours ouvrables.</li>
-          <li>Amerique du Nord : 6 a 9 jours ouvrables.</li>
+          <li>France métropolitaine : 2 à 4 jours ouvrables après expédition.</li>
+          <li>Union européenne : 4 à 6 jours ouvrables.</li>
+          <li>Amerique du Nord : 6 à 9 jours ouvrables.</li>
         </ul>
         <p>
-          Les delais peuvent varier en fonction des formalites douanieres. Katana Forge vous tient informe en cas
-          d incident de transport.
+          Les délais peuvent varier en fonction des formalités douanières. Katana Forge vous tient informé en cas
+          d'incident de transport.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
-        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Verification a reception</h2>
+        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Vérification à réception</h2>
         <p>
-          Lors de la livraison, controlez l etat du colis avant signature. En cas d avarie, formulez des reserves
-          precises sur le bon du transporteur et contactez-nous sous 48 heures a logistique@katana-forge.com.
+          Lors de la livraison, controlez l'état du colis avant signature. En cas d'avarie, formulez des réserves
+          précises sur le bon du transporteur et contactez-nous sous 48 heures à logistique@katana-forge.com.
         </p>
       </section>
     </article>

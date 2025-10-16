@@ -13,7 +13,7 @@ const KatanaCanvas = dynamic(() => import("@/components/configurator/KatanaCanva
   ssr: false,
   loading: () => (
     <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.4em] text-white/50">
-      Chargement de l atelier 3D...
+      Chargement de l'atelier 3D...
     </div>
   ),
 });
@@ -168,7 +168,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     }
 
     if (!katanaName.trim()) {
-      setSaveError("Donnez un nom a votre katana avant d enregistrer.");
+      setSaveError("Donnez un nom a votre katana avant d'enregistrer.");
       return;
     }
 
@@ -197,19 +197,19 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
-        throw new Error(data.error ?? "Impossible d enregistrer ce katana");
+        throw new Error(data.error ?? "Impossible d'enregistrer ce katana");
       }
 
       const data = (await response.json()) as { katana: { id: string; name: string } };
 
       if (isDemo) {
-        setSaveMessage("Katana enregistre ! Redirection vers votre sauvegarde...");
+        setSaveMessage("Katana enregistré ! Redirection vers votre sauvegarde...");
         router.push(`/atelier/${data.katana.id}`);
         return;
       }
 
       setKatanaName(data.katana.name);
-      setSaveMessage("Katana sauvegarde avec succes.");
+      setSaveMessage("Katana sauvegardé avec succès.");
     } catch (saveException) {
       setSaveError(saveException instanceof Error ? saveException.message : "Sauvegarde impossible");
     } finally {
@@ -225,7 +225,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
           Configuration #{katanaId}
         </h2>
         <p className="text-sm text-white/60">
-          Ajustez les parametres visuels du katana, puis calculez un devis instantane.
+          Ajustez les parametres visuels du katana, puis calculez un devis instantané.
         </p>
         {initialError ? <p className="text-xs text-katanaRed">{initialError}</p> : null}
       </header>
@@ -244,10 +244,10 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
           ) : null}
 
           <section className="rounded-3xl border border-white/10 bg-black/40 p-6 text-sm text-white/80 backdrop-blur">
-            <h3 className="text-xs uppercase tracking-[0.4em] text-emberGold">Devis estime</h3>
+            <h3 className="text-xs uppercase tracking-[0.4em] text-emberGold">Devis estimé</h3>
             <p className="mt-2 text-3xl font-heading text-emberGold">{previewPrice} EUR</p>
             <p className="mt-2 text-xs text-white/60">
-              Base price {basePrice} EUR. Ajustez les curseurs pour visualiser l impact sur le devis.
+              Base price {basePrice} EUR. Ajustez les curseurs pour visualiser l'impact sur le devis.
             </p>
             <button
               type="button"
@@ -263,9 +263,9 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
             {quote ? (
               <div className="mt-4 space-y-1 text-xs text-white/60">
                 <p>
-                  Devis confirme: <span className="text-white/90">{quote.price} {quote.currency}</span>
+                  Devis confirmé: <span className="text-white/90">{quote.price} {quote.currency}</span>
                 </p>
-                <p>Delai estime: {quote.estimatedDeliveryWeeks} semaines</p>
+                <p>Délai estimé: {quote.estimatedDeliveryWeeks} semaines</p>
               </div>
             ) : null}
           </section>
@@ -296,7 +296,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
                     ? "Sauvegarde en cours..."
                     : isDemo
                       ? "Enregistrer dans mon compte"
-                      : "Mettre a jour"}
+                      : "Mettre à jour"}
                 </button>
               </div>
             ) : (
@@ -306,7 +306,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
                 </Link>{" "}
                 ou{" "}
                 <Link href="/inscription" className="text-emberGold underline decoration-dotted underline-offset-2">
-                  creez un compte
+                  créez un compte
                 </Link>{" "}
                 pour sauvegarder vos configurations dans votre espace personnel.
               </p>
