@@ -22,9 +22,9 @@ export default function UIControls({ config, onUpdate }: UIControlsProps) {
   return (
     <section className="space-y-6 rounded-3xl border border-white/10 bg-black/40 p-6 text-white/80 shadow-xl backdrop-blur">
       <header>
-        <h3 className="text-sm uppercase tracking-[0.4em] text-emberGold">Parametres</h3>
+        <h3 className="text-sm uppercase tracking-[0.4em] text-emberGold">Paramètres</h3>
         <p className="mt-2 text-xs text-white/60">
-          Ajustez la couleur du tsuka, l eclat de la lame et la finition metallique.
+          Ajustez la couleur du tsuka, l'éclat de la lame et la finition métallique.
         </p>
       </header>
 

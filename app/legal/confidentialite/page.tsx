@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 
-const LAST_UPDATE_ISO = "2025-10-12";
-const LAST_UPDATE_LABEL = "12 octobre 2025";
+const LAST_UPDATE_ISO = "2025-10-15";
+const LAST_UPDATE_LABEL = "15 octobre 2025";
 
 export const metadata: Metadata = {
-  title: "Politique de confidentialite | Katana Forge",
-  description: "Presentation complete de la politique de confidentialite et du traitement des donnees personnelles.",
+  title: "Politique de confidentialité | Katana Forge",
+  description: "Présentation complète de la politique de confidentialité et du traitement des données personnelles.",
   alternates: {
     canonical: "/legal/confidentialite",
   },
   openGraph: {
-    title: "Politique de confidentialite | Katana Forge",
-    description: "Decouvrez comment Katana Forge collecte, traite et protege vos donnees personnelles.",
+    title: "Politique de confidentialité | Katana Forge",
+    description: "Découvrez comment Katana Forge collecte, traite et protège vos données personnelles.",
     url: "https://katana-forge.example.com/legal/confidentialite",
   },
 };
@@ -21,45 +21,45 @@ export default function ConfidentialitePage() {
     <article className="mx-auto grid max-w-4xl gap-10 px-6 py-16 text-white/70">
       <header className="space-y-3 text-white">
         <p className="text-xs uppercase tracking-[0.5em] text-emberGold">Legal</p>
-        <h1 className="text-3xl font-heading uppercase tracking-[0.35em] md:text-4xl">Politique de confidentialite</h1>
+        <h1 className="text-3xl font-heading uppercase tracking-[0.35em] md:text-4xl">Politique de confidentialité</h1>
         <p className="text-sm text-white/50">
-          Derniere mise a jour : <time dateTime={LAST_UPDATE_ISO}>{LAST_UPDATE_LABEL}</time>
+          Derniere mise à jour : <time dateTime={LAST_UPDATE_ISO}>{LAST_UPDATE_LABEL}</time>
         </p>
       </header>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/40 p-8 backdrop-blur">
-        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Principes generaux</h2>
+        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Principes généraux</h2>
         <p>
-          Katana Forge collecte uniquement les donnees strictement necessaires a l experience de configuration et a la
-          gestion de la relation client. Les traitements sont effectues conformement au Reglement general sur la
-          protection des donnees (RGPD) et reposent sur les fondements juridiques suivants : execution du contrat,
-          interet legitime pour la securisation de la plateforme et consentement pour la communication marketing.
+          Katana Forge collecte uniquement les donnees strictement nécessaires à l'expérience de configuration et à la
+          gestion de la relation client. Les traitements sont effectués conformément au Règlement Général sur la
+          Protection des Données (RGPD) et reposent sur les fondements juridiques suivants : exécution du contrat,
+          intérêt légitime pour la sécurisation de la plateforme et consentement pour la communication marketing.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
-        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Donnees collecte</h2>
+        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Données collectées</h2>
         <ul className="space-y-2">
-          <li>Identite : nom, prenom, adresse email et telephone.</li>
-          <li>Configuration : preferences d acier, tsuka, garde et historique de devis.</li>
+          <li>Identité : nom, prénom, adresse email et téléphone.</li>
+          <li>Configuration : préférences d'acier, tsuka, garde, lame et historique de devis.</li>
           <li>
-            Donnees techniques : journaux anonymises pour la securite, cookies de mesure d audience et identifiants de
+            Données techniques : journaux anonymisés pour la sécurité, cookies de mesure d'audience et identifiants de
             session.
           </li>
         </ul>
-        <p>Les donnees sont conservees pour une duree maximale de 3 ans apres la derniere interaction.</p>
+        <p>Les données sont conservées pour une durée maximale de 3 ans apres la dernière intéraction.</p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Vos droits</h2>
         <p>
-          Vous disposez des droits d acces, de rectification, d effacement, de limitation, d opposition et de portabilite
-          sur vos donnees personnelles. Vous pouvez definir des directives relatives au sort de vos informations apres
-          votre deces.
+          Vous disposez des droits d'accès, de rectification, d'éffacement, de limitation, d'opposition et de portabilité
+          sur vos données personnelles. Vous pouvez définir des directives relatives au sort de vos informations après
+          votre décès.
         </p>
         <p>
-          Pour exercer vos droits, adressez votre demande accompagnee d une preuve d identite a notre DPO via le contact
-          ci-dessous. Une reponse vous sera apportee dans un delai d un mois maximum.
+          Pour exercer vos droits, adressez votre demande accompagnée d'une preuve d'identité a notre DPO via le contact
+          ci-dessous. Une réponse vous sera apportée dans un délai d'un mois maximum.
         </p>
       </section>
 
@@ -72,7 +72,7 @@ export default function ConfidentialitePage() {
           Contact DPO
         </h2>
         <p>
-          Delegue a la protection des donnees : Hanae Kobayashi. Adresse postale : Forge Studio SAS, 21 rue des
+          Déleguée à la protection des données : Hanae Kobayashi. Adresse postale : Forge Studio SAS, 4 rue des
           Forgerons, 69002 Lyon, France.
         </p>
         <p>
@@ -80,18 +80,18 @@ export default function ConfidentialitePage() {
           <a className="underline decoration-emberGold/60 hover:text-emberGold" href="mailto:dpo@katana-forge.com">
             dpo@katana-forge.com
           </a>
-          . Telephone : +33 (0)4 72 00 45 60.
+          . Telephone : +33 (0)7 63 78 42 10.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Sous-traitants</h2>
         <p>
-          Katana Forge confie certaines prestations techniques a des tiers garantissant un niveau de securite conforme
-          aux exigences du RGPD : Vercel (hebergement), Prisma (gestion des donnees), Mailjet (communication transactionnelle).
+          Katana Forge confie certaines prestations techniques à des tiers garantissant un niveau de sécurité conforme
+          aux exigences du RGPD : Vercel (hébergement), Prisma (gestion des données), Mailjet (communication transactionnelle).
         </p>
         <p>
-          Des clauses contractuelles types encadrent tout transfert en dehors de l Union europeenne.
+          Des clauses contractuelles types encadrent tout transfert en dehors de l'Union européenne.
         </p>
       </section>
     </article>

@@ -42,7 +42,7 @@ export default function LoginForm() {
       <header className="space-y-2">
         <p className="text-xs uppercase tracking-[0.4em] text-emberGold">Connexion</p>
         <h1 className="text-2xl font-heading uppercase tracking-[0.3em] text-white">Retrouvez la forge</h1>
-        <p className="text-xs text-white/60">Connectez-vous pour retrouver vos configurations sauvegardees.</p>
+        <p className="text-xs text-white/60">Connectez-vous pour retrouver vos configurations sauvegardées.</p>
       </header>
 
       <div className="grid gap-4">
@@ -80,7 +80,7 @@ export default function LoginForm() {
       <p className="text-center text-xs text-white/50">
         Pas de compte ?{" "}
         <Link href="/inscription" className="text-emberGold underline decoration-dotted underline-offset-4">
-          Creer un compte
+          Créer un compte
         </Link>
       </p>
     </form>

@@ -38,7 +38,7 @@ export default function RegisterForm() {
     if (result.success) {
       router.replace("/compte");
     } else {
-      setError(result.error ?? "Impossible de creer le compte");
+      setError(result.error ?? "Impossible de créer le compte");
     }
 
     setPending(false);
@@ -49,7 +49,7 @@ export default function RegisterForm() {
       <header className="space-y-2">
         <p className="text-xs uppercase tracking-[0.4em] text-emberGold">Inscription</p>
         <h1 className="text-2xl font-heading uppercase tracking-[0.3em] text-white">Rejoindre la forge</h1>
-        <p className="text-xs text-white/60">Creer un compte pour sauvegarder vos katanas personnalises.</p>
+        <p className="text-xs text-white/60">Créer un compte pour sauvegarder vos katanas personnalisés.</p>
       </header>
 
       <div className="grid gap-4">
@@ -101,7 +101,7 @@ export default function RegisterForm() {
       </button>
 
       <p className="text-center text-xs text-white/50">
-        Deja inscrit ?{" "}
+        Déjà inscrit ?{" "}
         <Link href="/connexion" className="text-emberGold underline decoration-dotted underline-offset-4">
           Se connecter
         </Link>

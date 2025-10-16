@@ -3,10 +3,10 @@ import { z } from "zod";
 export const katanaConfigSchema = z.object({
   handleColor: z
     .string()
-    .regex(/^#([0-9a-fA-F]{6})$/, "La couleur du tsuka doit etre un code hex valid."),
+    .regex(/^#([0-9a-fA-F]{6})$/, "La couleur du tsuka doit être un code hex valide."),
   bladeTint: z
     .string()
-    .regex(/^#([0-9a-fA-F]{6})$/, "La couleur de la lame doit etre un code hex valid."),
+    .regex(/^#([0-9a-fA-F]{6})$/, "La couleur de la lame doit être un code hex valide."),
   metalness: z
     .number()
     .min(0, "Metalness minimal 0")
