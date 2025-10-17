@@ -2,8 +2,11 @@
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
+import { getServerSession } from "next-auth";
+
 import { prisma } from "./prisma";
 import { decodeAuthToken } from "./auth";
+import { authOptions } from "./auth-options";
 
 type IncomingRequest = NextRequest | Request | undefined;
 
@@ -11,13 +14,13 @@ export async function getAuthenticatedUser(req?: IncomingRequest) {
   const token = extractToken(req);
 
   if (!token) {
-    return null;
+    return getSessionUser();
   }
 
   const payload = decodeAuthToken(token);
 
   if (!payload?.sub) {
-    return null;
+    return getSessionUser();
   }
 
   try {
@@ -27,12 +30,13 @@ export async function getAuthenticatedUser(req?: IncomingRequest) {
         id: true,
         email: true,
         name: true,
+        googleId: true,
         createdAt: true,
         updatedAt: true,
       },
     });
   } catch {
-    return null;
+    return getSessionUser();
   }
 }
 
@@ -83,4 +87,34 @@ function extractToken(req?: IncomingRequest) {
   }
 
   return cookies().get("auth_token")?.value ?? null;
+}
+
+async function getSessionUser() {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user) {
+      return null;
+    }
+
+    const { id, email } = session.user;
+
+    if (!id && !email) {
+      return null;
+    }
+
+    return prisma.user.findUnique({
+      where: id ? { id } : { email: email!.toLowerCase() },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        googleId: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  } catch {
+    return null;
+  }
 }

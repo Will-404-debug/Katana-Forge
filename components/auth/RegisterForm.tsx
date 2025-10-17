@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import GoogleSignInButton from "@/components/auth/GoogleSignInButton";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -99,6 +100,14 @@ export default function RegisterForm() {
       <button type="submit" className="btn-primary w-full" disabled={pending}>
         {pending ? "Creation en cours..." : "Creer mon compte"}
       </button>
+
+      <div className="flex items-center gap-3 text-[0.65rem] uppercase tracking-[0.3em] text-white/40">
+        <span className="h-px flex-1 bg-white/10" aria-hidden />
+        <span>ou</span>
+        <span className="h-px flex-1 bg-white/10" aria-hidden />
+      </div>
+
+      <GoogleSignInButton />
 
       <p className="text-center text-xs text-white/50">
         Déjà inscrit ?{" "}

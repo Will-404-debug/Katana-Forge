@@ -9,11 +9,13 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { signOut } from "next-auth/react";
 
 export type AuthUser = {
   id: string;
   email: string;
   name: string;
+  googleId?: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -160,6 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
+      await signOut({ redirect: false });
     } finally {
       setUser(null);
     }
