@@ -46,6 +46,9 @@ export default function SiteHeader() {
             <span className="text-white/50">Chargement...</span>
           ) : user ? (
             <>
+              <Link className="transition hover:text-emberGold" href="/profile">
+                Profil
+              </Link>
               <Link className="transition hover:text-emberGold" href="/compte">
                 Mon espace
               </Link>
