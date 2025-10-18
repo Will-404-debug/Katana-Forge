@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/Will-404-debug/Katana-Forge/compare/v1.2.0...v1.2.1) (2025-10-18)
+
+
+### Bug Fixes
+
+* **JWTauth:** Fix JWT_SECRET deletion ([386c410](https://github.com/Will-404-debug/Katana-Forge/commit/386c410c662c25537e2232dbbeb2cf76f5bf405f))
+
 ## [1.2.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.1.0...v1.2.0) (2025-10-17)
 
 
