@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.2.1...v1.3.0) (2025-10-21)
+
+
+### Features
+
+* **cart:** gated cart icon; test(e2e): cart icon gating ([fe4abd3](https://github.com/Will-404-debug/Katana-Forge/commit/fe4abd33ef8cde00902f45c885ed1f29db8643a4))
+
 ## [1.2.1](https://github.com/Will-404-debug/Katana-Forge/compare/v1.2.0...v1.2.1) (2025-10-18)
 
 
