@@ -1,14 +1,27 @@
-﻿"use client";
+"use client";
 
 import type { ChangeEvent } from "react";
+
+import BackgroundColorPicker from "@/components/configurator/BackgroundColorPicker";
 import type { KatanaConfiguration } from "@/lib/validation";
 
 type UIControlsProps = {
   config: KatanaConfiguration;
   onUpdate: (partial: Partial<KatanaConfiguration>) => void;
+  backgroundColor: string;
+  onBackgroundChange: (color: string) => void;
+  onBackgroundReset: () => void;
+  backgroundError?: string | null;
 };
 
-export default function UIControls({ config, onUpdate }: UIControlsProps) {
+export default function UIControls({
+  config,
+  onUpdate,
+  backgroundColor,
+  onBackgroundChange,
+  onBackgroundReset,
+  backgroundError,
+}: UIControlsProps) {
   const handleRangeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     onUpdate({ [name]: parseFloat(value) } as Partial<KatanaConfiguration>);
@@ -22,11 +35,18 @@ export default function UIControls({ config, onUpdate }: UIControlsProps) {
   return (
     <section className="space-y-6 rounded-3xl border border-white/10 bg-black/40 p-6 text-white/80 shadow-xl backdrop-blur">
       <header>
-        <h3 className="text-sm uppercase tracking-[0.4em] text-emberGold">Paramètres</h3>
+        <h3 className="text-sm uppercase tracking-[0.4em] text-emberGold">Parametres</h3>
         <p className="mt-2 text-xs text-white/60">
-          Ajustez la couleur du tsuka, l'éclat de la lame et la finition métallique.
+          Ajustez la couleur du studio, du tsuka, l&apos;eclat de la lame et la finition metallique.
         </p>
       </header>
+
+      <BackgroundColorPicker
+        value={backgroundColor}
+        onChange={onBackgroundChange}
+        onReset={onBackgroundReset}
+        error={backgroundError}
+      />
 
       <div className="grid gap-5 text-sm">
         <label className="flex flex-col gap-2">

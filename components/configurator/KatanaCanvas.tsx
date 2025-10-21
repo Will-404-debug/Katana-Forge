@@ -4,10 +4,12 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, OrbitControls, Html } from "@react-three/drei";
 import type { KatanaConfiguration } from "@/lib/validation";
+import { DEFAULT_BACKGROUND_COLOR } from "@/lib/background";
 import KatanaScene from "./KatanaScene";
 
 type KatanaCanvasProps = {
   config: KatanaConfiguration;
+  backgroundColor?: string;
 };
 
 function LoadingOverlay() {
@@ -20,7 +22,10 @@ function LoadingOverlay() {
   );
 }
 
-export default function KatanaCanvas({ config }: KatanaCanvasProps) {
+export default function KatanaCanvas({
+  config,
+  backgroundColor = DEFAULT_BACKGROUND_COLOR,
+}: KatanaCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -81,7 +86,7 @@ export default function KatanaCanvas({ config }: KatanaCanvasProps) {
         camera={{ position: [3.5, 2, 5], fov: 45 }}
         className="h-full w-full rounded-3xl"
       >
-        <color attach="background" args={["#040405"]} />
+        <color attach="background" args={[backgroundColor]} />
         <ambientLight intensity={0.45} />
         <directionalLight
           position={[5, 6, 2]}
