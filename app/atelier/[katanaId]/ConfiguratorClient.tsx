@@ -2,21 +2,24 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import UIControls from "@/components/configurator/UIControls";
 import { useAuth } from "@/components/auth/AuthProvider";
 import type { KatanaConfiguration } from "@/lib/validation";
 import { defaultKatanaConfig, katanaConfigSchema } from "@/lib/validation";
+import { DEFAULT_BACKGROUND_COLOR, backgroundColorSchema } from "@/lib/background";
 
 const KatanaCanvas = dynamic(() => import("@/components/configurator/KatanaCanvas"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.4em] text-white/50">
-      Chargement de l'atelier 3D...
+      Chargement de l&apos;atelier 3D...
     </div>
   ),
 });
+
+const BACKGROUND_STORAGE_KEY = "katana-background-color";
 
 type ConfiguratorClientProps = {
   katanaId: string;
@@ -31,7 +34,7 @@ type QuoteResponse = {
 
 export default function ConfiguratorClient({ katanaId, basePrice }: ConfiguratorClientProps) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
 
   const isDemo = katanaId === "demo";
 
@@ -45,6 +48,10 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving">("idle");
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [backgroundColor, setBackgroundColor] = useState<string>(DEFAULT_BACKGROUND_COLOR);
+  const [backgroundError, setBackgroundError] = useState<string | null>(null);
+  const backgroundSyncedRef = useRef<string>(DEFAULT_BACKGROUND_COLOR);
+  const backgroundRequestRef = useRef<AbortController | null>(null);
 
   const previewPrice = useMemo(
     () => Math.round(basePrice + config.metalness * 50 + config.roughness * 35),
@@ -62,6 +69,109 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       setErrorMessage(null);
       return validation.data;
     });
+  };
+
+  useEffect(() => {
+    if (user) {
+      const parsed = backgroundColorSchema.safeParse(user.backgroundColor);
+      const nextColor = parsed.success ? parsed.data : DEFAULT_BACKGROUND_COLOR;
+      backgroundSyncedRef.current = nextColor;
+      setBackgroundColor(nextColor);
+      setBackgroundError(null);
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(BACKGROUND_STORAGE_KEY, nextColor);
+      }
+      return;
+    }
+
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const stored = window.localStorage.getItem(BACKGROUND_STORAGE_KEY);
+    const parsed = stored ? backgroundColorSchema.safeParse(stored) : null;
+
+    if (parsed?.success) {
+      backgroundSyncedRef.current = parsed.data;
+      setBackgroundColor(parsed.data);
+    } else {
+      if (stored) {
+        window.localStorage.removeItem(BACKGROUND_STORAGE_KEY);
+      }
+      backgroundSyncedRef.current = DEFAULT_BACKGROUND_COLOR;
+      setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+    }
+    setBackgroundError(null);
+  }, [user]);
+
+  useEffect(() => {
+    if (backgroundColor === backgroundSyncedRef.current) {
+      return;
+    }
+
+    if (!user) {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(BACKGROUND_STORAGE_KEY, backgroundColor);
+      }
+      backgroundSyncedRef.current = backgroundColor;
+      setBackgroundError(null);
+      return;
+    }
+
+    backgroundRequestRef.current?.abort();
+    const controller = new AbortController();
+    backgroundRequestRef.current = controller;
+    setBackgroundError(null);
+
+    const persist = async () => {
+      try {
+        const response = await fetch("/api/preferences/background", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ backgroundColor }),
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.error ?? "Impossible d'enregistrer la couleur de fond");
+        }
+
+        backgroundSyncedRef.current = backgroundColor;
+        if (typeof window !== "undefined") {
+          window.localStorage.setItem(BACKGROUND_STORAGE_KEY, backgroundColor);
+        }
+        await refreshUser();
+      } catch (error) {
+        if (controller.signal.aborted) {
+          return;
+        }
+        setBackgroundError(error instanceof Error ? error.message : "Impossible d'enregistrer la couleur de fond");
+        setBackgroundColor(backgroundSyncedRef.current);
+      }
+    };
+
+    void persist();
+
+    return () => {
+      controller.abort();
+    };
+  }, [backgroundColor, refreshUser, user]);
+
+  useEffect(() => {
+    return () => {
+      backgroundRequestRef.current?.abort();
+    };
+  }, []);
+
+  const handleBackgroundChange = (color: string) => {
+    setBackgroundError(null);
+    setBackgroundColor(color);
+  };
+
+  const handleBackgroundReset = () => {
+    setBackgroundError(null);
+    setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
   };
 
   const requestQuote = async () => {
@@ -232,10 +342,17 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
 
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
         <div className="aspect-video overflow-hidden rounded-3xl border border-white/10 bg-black/40">
-          <KatanaCanvas config={config} />
+          <KatanaCanvas config={config} backgroundColor={backgroundColor} />
         </div>
         <div className="space-y-6">
-          <UIControls config={config} onUpdate={updateConfig} />
+          <UIControls
+            config={config}
+            onUpdate={updateConfig}
+            backgroundColor={backgroundColor}
+            onBackgroundChange={handleBackgroundChange}
+            onBackgroundReset={handleBackgroundReset}
+            backgroundError={backgroundError}
+          />
 
           {initialLoading ? (
             <section className="rounded-3xl border border-white/10 bg-black/40 p-6 text-sm text-white/70 backdrop-blur">

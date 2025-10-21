@@ -16,6 +16,7 @@ export type AuthUser = {
   id: string;
   email: string;
   name: string;
+  backgroundColor: string;
   googleId?: string | null;
   createdAt: string;
   updatedAt: string;
