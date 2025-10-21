@@ -19,6 +19,7 @@ model User {
 
   katanas Katana[]
   quotes  Quote[]
+  drafts  KatanaDraft[]
 }
 
 model Katana {
@@ -43,4 +44,18 @@ model Quote {
   estimatedDeliveryWeeks Int
   config                 String
   createdAt              DateTime @default(now())
+}
+
+model KatanaDraft {
+  id          String   @id @default(cuid())
+  owner       User?    @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId     String?
+  guestToken  String?  @unique
+  handleColor String
+  bladeTint   String
+  metalness   Float
+  roughness   Float
+  quantity    Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

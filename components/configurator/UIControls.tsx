@@ -8,6 +8,8 @@ import type { KatanaConfiguration } from "@/lib/validation";
 type UIControlsProps = {
   config: KatanaConfiguration;
   onUpdate: (partial: Partial<KatanaConfiguration>) => void;
+  quantity: number;
+  onQuantityChange: (quantity: number) => void;
   backgroundColor: string;
   onBackgroundChange: (color: string) => void;
   onBackgroundReset: () => void;
@@ -17,6 +19,8 @@ type UIControlsProps = {
 export default function UIControls({
   config,
   onUpdate,
+  quantity,
+  onQuantityChange,
   backgroundColor,
   onBackgroundChange,
   onBackgroundReset,
@@ -30,6 +34,11 @@ export default function UIControls({
   const handleColorChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     onUpdate({ [name]: value } as Partial<KatanaConfiguration>);
+  };
+
+  const handleQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const nextQuantity = Math.max(1, Math.min(10, Number.parseInt(event.target.value, 10) || 1));
+    onQuantityChange(nextQuantity);
   };
 
   return (
@@ -112,6 +121,22 @@ export default function UIControls({
             value={config.roughness}
             onChange={handleRangeChange}
             className="h-2 w-full cursor-ew-resize appearance-none rounded-full bg-white/10"
+          />
+        </label>
+
+        <label className="flex flex-col gap-2">
+          <span className="flex items-center justify-between uppercase tracking-[0.3em] text-xs text-white/60">
+            Quantite
+            <span className="rounded-full border border-white/10 px-2 py-0.5 text-white/50">{quantity}</span>
+          </span>
+          <input
+            type="number"
+            min={1}
+            max={10}
+            value={quantity}
+            onChange={handleQuantityChange}
+            className="h-10 w-full rounded-lg border border-white/10 bg-black/40 px-3 text-sm text-white focus:border-emberGold focus:outline-none"
+            data-testid="quantity-input"
           />
         </label>
       </div>

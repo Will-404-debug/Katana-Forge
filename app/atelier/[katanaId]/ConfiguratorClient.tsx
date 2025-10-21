@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import UIControls from "@/components/configurator/UIControls";
 import { useAuth } from "@/components/auth/AuthProvider";
 import type { KatanaConfiguration } from "@/lib/validation";
 import { defaultKatanaConfig, katanaConfigSchema } from "@/lib/validation";
 import { DEFAULT_BACKGROUND_COLOR, backgroundColorSchema } from "@/lib/background";
+import type { DraftSnapshot } from "@/lib/drafts";
+import { parseDraftSnapshot } from "@/lib/drafts";
 
 const KatanaCanvas = dynamic(() => import("@/components/configurator/KatanaCanvas"), {
   ssr: false,
@@ -20,6 +22,8 @@ const KatanaCanvas = dynamic(() => import("@/components/configurator/KatanaCanva
 });
 
 const BACKGROUND_STORAGE_KEY = "katana-background-color";
+const DRAFT_STORAGE_KEY = "katana-draft";
+const DRAFT_SYNC_DELAY = 600;
 
 type ConfiguratorClientProps = {
   katanaId: string;
@@ -32,6 +36,35 @@ type QuoteResponse = {
   estimatedDeliveryWeeks: number;
 };
 
+type DraftState = DraftSnapshot & { updatedAt: string };
+
+function computeDraftHash(draft: Pick<DraftState, "handleColor" | "bladeTint" | "metalness" | "roughness" | "quantity">) {
+  return [
+    draft.handleColor,
+    draft.bladeTint,
+    draft.metalness.toFixed(4),
+    draft.roughness.toFixed(4),
+    draft.quantity.toString(),
+  ].join("|");
+}
+
+function ensureDraftState(data: unknown): DraftState | null {
+  const parsed = parseDraftSnapshot(data);
+
+  if (!parsed) {
+    return null;
+  }
+
+  return {
+    handleColor: parsed.handleColor,
+    bladeTint: parsed.bladeTint,
+    metalness: parsed.metalness,
+    roughness: parsed.roughness,
+    quantity: parsed.quantity,
+    updatedAt: parsed.updatedAt ?? new Date().toISOString(),
+  };
+}
+
 export default function ConfiguratorClient({ katanaId, basePrice }: ConfiguratorClientProps) {
   const router = useRouter();
   const { user, refreshUser } = useAuth();
@@ -39,6 +72,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   const isDemo = katanaId === "demo";
 
   const [config, setConfig] = useState<KatanaConfiguration>(defaultKatanaConfig);
+  const [quantity, setQuantity] = useState<number>(1);
   const [quote, setQuote] = useState<QuoteResponse | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -50,13 +84,123 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   const [saveError, setSaveError] = useState<string | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>(DEFAULT_BACKGROUND_COLOR);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
+
   const backgroundSyncedRef = useRef<string>(DEFAULT_BACKGROUND_COLOR);
   const backgroundRequestRef = useRef<AbortController | null>(null);
 
-  const previewPrice = useMemo(
+  const draftHydratedRef = useRef(false);
+  const draftPersistIgnoreRef = useRef(false);
+  const draftSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastDraftHashRef = useRef<string | null>(null);
+  const lastServerDraftHashRef = useRef<string | null>(null);
+
+  const saveDraftLocally = useCallback((draft: DraftState) => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      window.localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draft));
+    } catch {
+      // ignore storage quota errors
+    }
+  }, []);
+
+  const readLocalDraft = useCallback((): DraftState | null => {
+    if (typeof window === "undefined") {
+      return null;
+    }
+
+    const raw = window.localStorage.getItem(DRAFT_STORAGE_KEY);
+
+    if (!raw) {
+      return null;
+    }
+
+    try {
+      const parsed = ensureDraftState(JSON.parse(raw));
+      if (!parsed) {
+        window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+      }
+      return parsed;
+    } catch {
+      window.localStorage.removeItem(DRAFT_STORAGE_KEY);
+      return null;
+    }
+  }, []);
+
+  const buildDraftState = useCallback(
+    (overrides?: Partial<DraftState>): DraftState => ({
+      handleColor: overrides?.handleColor ?? config.handleColor,
+      bladeTint: overrides?.bladeTint ?? config.bladeTint,
+      metalness: overrides?.metalness ?? config.metalness,
+      roughness: overrides?.roughness ?? config.roughness,
+      quantity: overrides?.quantity ?? quantity,
+      updatedAt: overrides?.updatedAt ?? new Date().toISOString(),
+    }),
+    [config.bladeTint, config.handleColor, config.metalness, config.roughness, quantity],
+  );
+
+  const applyDraft = useCallback(
+    (draft: DraftState, options?: { fromServer?: boolean }) => {
+      draftPersistIgnoreRef.current = true;
+      setConfig(() => ({
+        handleColor: draft.handleColor,
+        bladeTint: draft.bladeTint,
+        metalness: draft.metalness,
+        roughness: draft.roughness,
+      }));
+      setQuantity(draft.quantity);
+      const hash = computeDraftHash(draft);
+      lastDraftHashRef.current = hash;
+      if (options?.fromServer) {
+        lastServerDraftHashRef.current = hash;
+      }
+      saveDraftLocally(draft);
+      setErrorMessage(null);
+    },
+    [saveDraftLocally],
+  );
+
+  const syncDraftToServer = useCallback(
+    async (draft: DraftState) => {
+      try {
+        const response = await fetch("/api/drafts", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            handleColor: draft.handleColor,
+            bladeTint: draft.bladeTint,
+            metalness: draft.metalness,
+            roughness: draft.roughness,
+            quantity: draft.quantity,
+          }),
+        });
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = (await response.json()) as { draft?: DraftSnapshot | null };
+        const nextDraft = ensureDraftState(data?.draft ?? null);
+
+        if (nextDraft) {
+          lastServerDraftHashRef.current = computeDraftHash(nextDraft);
+          saveDraftLocally(nextDraft);
+        }
+      } catch {
+        // swallow network errors
+      }
+    },
+    [saveDraftLocally],
+  );
+
+  const unitPrice = useMemo(
     () => Math.round(basePrice + config.metalness * 50 + config.roughness * 35),
     [basePrice, config.metalness, config.roughness],
   );
+  const previewPrice = useMemo(() => unitPrice * quantity, [quantity, unitPrice]);
 
   const updateConfig = (partial: Partial<KatanaConfiguration>) => {
     setConfig((previous) => {
@@ -70,6 +214,77 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       return validation.data;
     });
   };
+
+  useEffect(() => {
+    if (!isDemo) {
+      draftHydratedRef.current = false;
+      return;
+    }
+
+    let cancelled = false;
+    const controller = new AbortController();
+    draftHydratedRef.current = false;
+
+    const localDraft = readLocalDraft();
+    if (localDraft) {
+      applyDraft(localDraft);
+    }
+
+    const hydrate = async () => {
+      try {
+        if (user) {
+          const response = await fetch("/api/drafts/merge", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(localDraft ?? {}),
+            signal: controller.signal,
+          });
+
+          if (!response.ok || cancelled) {
+            return;
+          }
+
+          const data = (await response.json()) as { draft: DraftSnapshot | null };
+          const next = ensureDraftState(data?.draft ?? null);
+          if (next) {
+            applyDraft(next, { fromServer: true });
+          }
+        } else {
+          const response = await fetch("/api/drafts", {
+            method: "GET",
+            credentials: "include",
+            signal: controller.signal,
+          });
+
+          if (!response.ok || cancelled) {
+            return;
+          }
+
+          const data = (await response.json()) as { draft: DraftSnapshot | null };
+          const next = ensureDraftState(data?.draft ?? null);
+          if (next) {
+            applyDraft(next, { fromServer: true });
+          }
+        }
+      } catch (error) {
+        if (controller.signal.aborted) {
+          return;
+        }
+      } finally {
+        if (!cancelled) {
+          draftHydratedRef.current = true;
+        }
+      }
+    };
+
+    void hydrate();
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [applyDraft, isDemo, readLocalDraft, user]);
 
   useEffect(() => {
     if (user) {
@@ -164,6 +379,47 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      if (draftSaveTimeoutRef.current) {
+        clearTimeout(draftSaveTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isDemo) {
+      return;
+    }
+
+    if (!draftHydratedRef.current) {
+      return;
+    }
+
+    if (draftPersistIgnoreRef.current) {
+      draftPersistIgnoreRef.current = false;
+      return;
+    }
+
+    const nextDraft = buildDraftState({ updatedAt: new Date().toISOString() });
+    const hash = computeDraftHash(nextDraft);
+
+    if (lastDraftHashRef.current === hash && lastServerDraftHashRef.current === hash) {
+      return;
+    }
+
+    lastDraftHashRef.current = hash;
+    saveDraftLocally(nextDraft);
+
+    if (draftSaveTimeoutRef.current) {
+      clearTimeout(draftSaveTimeoutRef.current);
+    }
+
+    draftSaveTimeoutRef.current = setTimeout(() => {
+      void syncDraftToServer(nextDraft);
+    }, DRAFT_SYNC_DELAY);
+  }, [buildDraftState, isDemo, saveDraftLocally, syncDraftToServer]);
+
   const handleBackgroundChange = (color: string) => {
     setBackgroundError(null);
     setBackgroundColor(color);
@@ -173,6 +429,10 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     setBackgroundError(null);
     setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
   };
+
+  const handleQuantityChange = useCallback((nextQuantity: number) => {
+    setQuantity(nextQuantity);
+  }, []);
 
   const requestQuote = async () => {
     setStatus("loading");
@@ -313,13 +573,13 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       const data = (await response.json()) as { katana: { id: string; name: string } };
 
       if (isDemo) {
-        setSaveMessage("Katana enregistré ! Redirection vers votre sauvegarde...");
+        setSaveMessage("Katana enregistre ! Redirection vers votre sauvegarde...");
         router.push(`/atelier/${data.katana.id}`);
         return;
       }
 
       setKatanaName(data.katana.name);
-      setSaveMessage("Katana sauvegardé avec succès.");
+      setSaveMessage("Katana sauvegarde avec succes.");
     } catch (saveException) {
       setSaveError(saveException instanceof Error ? saveException.message : "Sauvegarde impossible");
     } finally {
@@ -335,7 +595,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
           Configuration #{katanaId}
         </h2>
         <p className="text-sm text-white/60">
-          Ajustez les parametres visuels du katana, puis calculez un devis instantané.
+          Ajustez les parametres visuels du katana, puis calculez un devis instantane.
         </p>
         {initialError ? <p className="text-xs text-katanaRed">{initialError}</p> : null}
       </header>
@@ -348,6 +608,8 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
           <UIControls
             config={config}
             onUpdate={updateConfig}
+            quantity={quantity}
+            onQuantityChange={handleQuantityChange}
             backgroundColor={backgroundColor}
             onBackgroundChange={handleBackgroundChange}
             onBackgroundReset={handleBackgroundReset}
@@ -361,8 +623,11 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
           ) : null}
 
           <section className="rounded-3xl border border-white/10 bg-black/40 p-6 text-sm text-white/80 backdrop-blur">
-            <h3 className="text-xs uppercase tracking-[0.4em] text-emberGold">Devis estimé</h3>
+            <h3 className="text-xs uppercase tracking-[0.4em] text-emberGold">Devis estime</h3>
             <p className="mt-2 text-3xl font-heading text-emberGold">{previewPrice} EUR</p>
+            <p className="mt-1 text-xs text-white/60">
+              {quantity > 1 ? `${unitPrice} EUR par unite x ${quantity}` : `${unitPrice} EUR pour une piece`}
+            </p>
             <p className="mt-2 text-xs text-white/60">
               Base price {basePrice} EUR. Ajustez les curseurs pour visualiser l'impact sur le devis.
             </p>
@@ -380,9 +645,9 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
             {quote ? (
               <div className="mt-4 space-y-1 text-xs text-white/60">
                 <p>
-                  Devis confirmé: <span className="text-white/90">{quote.price} {quote.currency}</span>
+                  Devis confirme: <span className="text-white/90">{quote.price} {quote.currency}</span>
                 </p>
-                <p>Délai estimé: {quote.estimatedDeliveryWeeks} semaines</p>
+                <p>Delai estime: {quote.estimatedDeliveryWeeks} semaines</p>
               </div>
             ) : null}
           </section>
@@ -413,7 +678,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
                     ? "Sauvegarde en cours..."
                     : isDemo
                       ? "Enregistrer dans mon compte"
-                      : "Mettre à jour"}
+                      : "Mettre a jour"}
                 </button>
               </div>
             ) : (
@@ -423,7 +688,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
                 </Link>{" "}
                 ou{" "}
                 <Link href="/inscription" className="text-emberGold underline decoration-dotted underline-offset-2">
-                  créez un compte
+                  creez un compte
                 </Link>{" "}
                 pour sauvegarder vos configurations dans votre espace personnel.
               </p>
