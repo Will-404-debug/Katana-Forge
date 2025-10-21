@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.4.0...v1.5.0) (2025-10-21)
+
+
+### Features
+
+* **katana:** draft save/load; feat(katana): post-login merge; test: draft merge ([a72358a](https://github.com/Will-404-debug/Katana-Forge/commit/a72358a4ba1f136ec528d0da1097314dce41dbc9))
+
 ## [1.4.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.3.0...v1.4.0) (2025-10-21)
 
 
