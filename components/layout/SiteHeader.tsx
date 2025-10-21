@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import CartIcon from "@/components/cart/CartIcon";
 
 export default function SiteHeader() {
   const router = useRouter();
@@ -71,6 +72,7 @@ export default function SiteHeader() {
               </Link>
             </>
           )}
+          <CartIcon />
         </nav>
       </div>
     </header>

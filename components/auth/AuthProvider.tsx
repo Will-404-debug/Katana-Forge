@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -40,7 +41,7 @@ type AuthActionResult = {
   error?: string;
 };
 
-type AuthContextValue = {
+export type AuthContextValue = {
   user: AuthUser | null;
   initializing: boolean;
   refreshUser: () => Promise<void>;
@@ -56,11 +57,35 @@ async function parseResponse<T>(response: Response) {
   return data;
 }
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [initializing, setInitializing] = useState(true);
+type AuthProviderProps = {
+  children: ReactNode;
+  initialUser?: AuthUser | null;
+};
+
+export function AuthProvider({ children, initialUser = null }: AuthProviderProps) {
+  const [user, setUser] = useState<AuthUser | null>(initialUser ?? null);
+  const [initializing, setInitializing] = useState(!initialUser);
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    setUser(initialUser ?? null);
+    if (initialUser) {
+      setInitializing(false);
+    }
+  }, [initialUser]);
 
   const refreshUser = useCallback(async () => {
+    if (isMounted.current) {
+      setInitializing(true);
+    }
+
     try {
       const response = await fetch("/api/auth/me", {
         method: "GET",
@@ -71,39 +96,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (!response.ok) {
         if (response.status === 401) {
-          setUser(null);
+          if (isMounted.current) {
+            setUser(null);
+          }
           return;
         }
         const data = await parseResponse<AuthResponse>(response);
-        throw new Error(data.error ?? "Impossible de récuperer le profil");
+        throw new Error(data.error ?? "Impossible de réccuperer le profil");
       }
 
       const data = (await response.json()) as AuthResponse;
-      setUser(data.user);
+      if (isMounted.current) {
+        setUser(data.user);
+      }
     } catch {
-      setUser(null);
+      if (isMounted.current) {
+        setUser(null);
+      }
     } finally {
-      setInitializing(false);
+      if (isMounted.current) {
+        setInitializing(false);
+      }
     }
   }, []);
 
   useEffect(() => {
-    let active = true;
+    if (initialUser) {
+      return;
+    }
 
-    (async () => {
-      try {
-        await refreshUser();
-      } finally {
-        if (active) {
-          setInitializing(false);
-        }
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [refreshUser]);
+    void refreshUser();
+  }, [initialUser, refreshUser]);
 
   const login = useCallback(
     async ({ email, password }: LoginPayload): Promise<AuthActionResult> => {
@@ -122,6 +145,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         const data = (await response.json()) as AuthResponse;
         setUser(data.user);
+        setInitializing(false);
         return { success: true };
       } catch {
         return { success: false, error: "Impossible de se connecter pour le moment" };
@@ -142,14 +166,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
         if (!response.ok) {
           const data = await parseResponse<AuthResponse>(response);
-          return { success: false, error: data.error ?? "Impossible de créer le compte" };
+          return { success: false, error: data.error ?? "Impossible de crAcer le compte" };
         }
 
         const data = (await response.json()) as AuthResponse;
         setUser(data.user);
+        setInitializing(false);
         return { success: true };
       } catch {
-        return { success: false, error: "Impossible de créer le compte" };
+        return { success: false, error: "Impossible de crAcer le compte" };
       }
     },
     [],
@@ -165,6 +190,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await signOut({ redirect: false });
     } finally {
       setUser(null);
+      setInitializing(false);
     }
   }, []);
 
