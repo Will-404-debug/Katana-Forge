@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.3.0...v1.4.0) (2025-10-21)
+
+
+### Features
+
+* **katana:** background color picker; test(e2e): color persistence ([0e151e9](https://github.com/Will-404-debug/Katana-Forge/commit/0e151e9d183e8ccd8d3dc19742db67492c565d32))
+
 ## [1.3.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.2.1...v1.3.0) (2025-10-21)
 
 
