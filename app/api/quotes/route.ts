@@ -45,15 +45,35 @@ export async function POST(request: Request) {
     estimatedDeliveryWeeks,
   };
 
-  await prisma.quote.create({
-    data: {
-      userId: user?.id,
-      price,
-      currency: response.currency,
-      estimatedDeliveryWeeks,
-      config: JSON.stringify(config),
-    },
-  });
+  const legacyClient = prisma as typeof prisma & {
+    katanaQuote?: {
+      create: (args: {
+        data: {
+          userId?: string | null;
+          price: number;
+          currency: string;
+          estimatedDeliveryWeeks: number;
+          config: string;
+        };
+      }) => Promise<unknown>;
+    };
+  };
+
+  try {
+    if (legacyClient.katanaQuote?.create) {
+      await legacyClient.katanaQuote.create({
+        data: {
+          userId: user?.id,
+          price,
+          currency: response.currency,
+          estimatedDeliveryWeeks,
+          config: JSON.stringify(config),
+        },
+      });
+    }
+  } catch (error) {
+    console.warn("Unable to persist legacy katana quote", error);
+  }
 
   return NextResponse.json(response, { status: 200 });
 }

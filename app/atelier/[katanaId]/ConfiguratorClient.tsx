@@ -11,6 +11,7 @@ import { defaultKatanaConfig, katanaConfigSchema } from "@/lib/validation";
 import { DEFAULT_BACKGROUND_COLOR, backgroundColorSchema } from "@/lib/background";
 import type { DraftSnapshot } from "@/lib/drafts";
 import { parseDraftSnapshot } from "@/lib/drafts";
+import { csrfHeader } from "@/lib/csrf";
 
 const KatanaCanvas = dynamic(() => import("@/components/configurator/KatanaCanvas"), {
   ssr: false,
@@ -93,6 +94,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   const draftSaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const lastDraftHashRef = useRef<string | null>(null);
   const lastServerDraftHashRef = useRef<string | null>(null);
+  const hydratedUserIdRef = useRef<string | null>(null);
 
   const saveDraftLocally = useCallback((draft: DraftState) => {
     if (typeof window === "undefined") {
@@ -167,7 +169,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       try {
         const response = await fetch("/api/drafts", {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...csrfHeader() },
           credentials: "include",
           body: JSON.stringify({
             handleColor: draft.handleColor,
@@ -218,8 +220,16 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   useEffect(() => {
     if (!isDemo) {
       draftHydratedRef.current = false;
+      hydratedUserIdRef.current = null;
       return;
     }
+
+    const currentUserId = user?.id ?? null;
+    if (draftHydratedRef.current && hydratedUserIdRef.current === currentUserId) {
+      return;
+    }
+
+    hydratedUserIdRef.current = currentUserId;
 
     let cancelled = false;
     const controller = new AbortController();
@@ -235,7 +245,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
         if (user) {
           const response = await fetch("/api/drafts/merge", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", ...csrfHeader() },
             credentials: "include",
             body: JSON.stringify(localDraft ?? {}),
             signal: controller.signal,
@@ -284,7 +294,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       cancelled = true;
       controller.abort();
     };
-  }, [applyDraft, isDemo, readLocalDraft, user]);
+  }, [applyDraft, isDemo, readLocalDraft, user?.id]);
 
   useEffect(() => {
     if (user) {
@@ -317,7 +327,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     }
     setBackgroundError(null);
-  }, [user]);
+  }, [user?.id, user?.backgroundColor]);
 
   useEffect(() => {
     if (backgroundColor === backgroundSyncedRef.current) {
@@ -342,7 +352,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       try {
         const response = await fetch("/api/preferences/background", {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...csrfHeader() },
           body: JSON.stringify({ backgroundColor }),
           signal: controller.signal,
         });
@@ -371,7 +381,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     return () => {
       controller.abort();
     };
-  }, [backgroundColor, refreshUser, user]);
+  }, [backgroundColor, refreshUser, user?.id]);
 
   useEffect(() => {
     return () => {
@@ -442,7 +452,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     try {
       const response = await fetch("/api/quotes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...csrfHeader() },
         body: JSON.stringify(config),
       });
 
@@ -477,7 +487,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       try {
         const response = await fetch(`/api/katanas/${katanaId}`, {
           method: "GET",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...csrfHeader() },
           credentials: "include",
           cache: "no-store",
         });
@@ -529,7 +539,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     return () => {
       cancelled = true;
     };
-  }, [katanaId, isDemo, user]);
+  }, [katanaId, isDemo, user?.id]);
 
   const handleSaveKatana = async () => {
     if (!user) {
@@ -558,12 +568,12 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       const url = isDemo ? "/api/katanas" : `/api/katanas/${katanaId}`;
       const method = isDemo ? "POST" : "PUT";
 
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
+        const response = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json", ...csrfHeader() },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        });
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));

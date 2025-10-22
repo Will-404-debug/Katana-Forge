@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react";
 import { signOut } from "next-auth/react";
+import { csrfHeader } from "@/lib/csrf";
 
 export type AuthUser = {
   id: string;
@@ -134,7 +135,10 @@ export function AuthProvider({ children, initialUser = null }: AuthProviderProps
       try {
         const response = await fetch("/api/auth/login", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...csrfHeader(),
+          },
           credentials: "include",
           body: JSON.stringify({ email, password }),
         });
@@ -160,7 +164,10 @@ export function AuthProvider({ children, initialUser = null }: AuthProviderProps
       try {
         const response = await fetch("/api/auth/register", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            ...csrfHeader(),
+          },
           credentials: "include",
           body: JSON.stringify({ email, password, name }),
         });
@@ -185,7 +192,10 @@ export function AuthProvider({ children, initialUser = null }: AuthProviderProps
     try {
       await fetch("/api/auth/logout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...csrfHeader(),
+        },
         credentials: "include",
       });
       await signOut({ redirect: false });

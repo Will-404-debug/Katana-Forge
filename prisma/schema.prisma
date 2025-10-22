@@ -8,18 +8,18 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String
-  backgroundColor String  @default("#040405")
-  googleId     String?  @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String   @id @default(cuid())
+  email           String   @unique
+  passwordHash    String
+  name            String
+  backgroundColor String   @default("#040405")
+  googleId        String?  @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  katanas Katana[]
-  quotes  Quote[]
-  drafts  KatanaDraft[]
+  katanas      Katana[]
+  katanaQuotes KatanaQuote[]
+  drafts       KatanaDraft[]
 }
 
 model Katana {
@@ -35,7 +35,7 @@ model Katana {
   updatedAt   DateTime @updatedAt
 }
 
-model Quote {
+model KatanaQuote {
   id                     String   @id @default(cuid())
   user                   User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId                 String?
@@ -58,4 +58,115 @@ model KatanaDraft {
   quantity    Int      @default(1)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+enum AddressType {
+  SHIPPING
+  BILLING
+}
+
+enum QuoteStatus {
+  DRAFT
+  SENT
+  ACCEPTED
+  EXPIRED
+  CONVERTED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELED
+  REFUNDED
+}
+
+model Customer {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  phone     String?
+  createdAt DateTime @default(now())
+
+  addresses Address[]
+  quotes    Quote[]
+  orders    Order[]
+}
+
+model Address {
+  id         String      @id @default(cuid())
+  customer   Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId String
+  type       AddressType
+  company    String?
+  vatNumber  String?
+  line1      String
+  line2      String?
+  city       String
+  postalCode String
+  country    String
+  createdAt  DateTime    @default(now())
+
+  quotesShipping Quote[] @relation("QuoteShippingAddress")
+  quotesBilling  Quote[] @relation("QuoteBillingAddress")
+}
+
+model Quote {
+  id              String      @id @default(cuid())
+  number          String      @unique
+  customer        Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId      String
+  shippingAddrId  String
+  billingAddrId   String
+  shippingAddress Address     @relation("QuoteShippingAddress", fields: [shippingAddrId], references: [id], onDelete: Restrict)
+  billingAddress  Address     @relation("QuoteBillingAddress", fields: [billingAddrId], references: [id], onDelete: Restrict)
+  currency        String      @default("EUR")
+  subtotalCents   Int
+  taxCents        Int
+  shippingCents   Int
+  totalCents      Int
+  status          QuoteStatus @default(DRAFT)
+  payLink         String?
+  pdfPath         String?
+  sentAt          DateTime?
+  consentAt       DateTime?
+  policyVersion   String?
+  createdAt       DateTime    @default(now())
+
+  items QuoteItem[]
+  order Order?
+}
+
+model QuoteItem {
+  id         String @id @default(cuid())
+  quote      Quote  @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  quoteId    String
+  sku        String
+  name       String
+  qty        Int
+  unitCents  Int
+  vatRatePct Int
+  totalCents Int
+}
+
+model QuoteCounter {
+  year      Int      @id
+  counter   Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  customer        Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId      String
+  quoteId         String?
+  quote           Quote?      @relation(fields: [quoteId], references: [id], onDelete: SetNull)
+  stripePaymentId String?
+  currency        String      @default("EUR")
+  totalCents      Int
+  status          OrderStatus @default(PENDING)
+  createdAt       DateTime    @default(now())
+
+  @@unique([quoteId])
 }

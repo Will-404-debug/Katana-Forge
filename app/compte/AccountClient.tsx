@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/components/auth/AuthProvider";
+import { csrfHeader } from "@/lib/csrf";
 
 type KatanaItem = {
   id: string;
@@ -79,7 +80,7 @@ export default function AccountClient() {
     try {
       const response = await fetch(`/api/katanas/${katanaId}`, {
         method: "DELETE",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", ...csrfHeader() },
         credentials: "include",
       });
 
