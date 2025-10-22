@@ -11,18 +11,26 @@
     "test:e2e": "playwright test",
     "db:apply": "prisma db execute --file prisma/migrations/0001_init/migration.sql --schema prisma/schema.prisma",
     "db:resolve": "prisma migrate resolve --applied 0001_init",
-    "db:init": "node scripts/db-init.mjs"
+    "db:init": "node scripts/db-init.mjs",
+    "dev:mailhog": "mailhog",
+    "dev:webhook": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.16.3",
+    "@react-pdf/renderer": "^4.3.1",
     "@react-three/drei": "^9.97.0",
     "@react-three/fiber": "^8.15.16",
     "bcryptjs": "^3.0.2",
     "jsonwebtoken": "^9.0.2",
     "next": "^14.2.33",
     "next-auth": "^4.24.7",
+    "nodemailer": "^6.10.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-hook-form": "^7.65.0",
+    "resend": "^6.2.2",
+    "stripe": "^19.1.0",
     "three": "^0.165.0",
     "zod": "^3.23.8"
   },
