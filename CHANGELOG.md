@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.5.0...v1.6.0) (2025-10-22)
+
+
+### Features
+
+* **checkout:** implement end-to-end quote and order flow ([ab10043](https://github.com/Will-404-debug/Katana-Forge/commit/ab10043e19f94d386a040d0505f25e41e17d6683))
+
 ## [1.5.0](https://github.com/Will-404-debug/Katana-Forge/compare/v1.4.0...v1.5.0) (2025-10-21)
 
 
