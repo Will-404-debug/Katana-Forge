@@ -28,7 +28,12 @@ export async function GET(request: Request, context: { params: { id: string } })
 
   try {
     const buffer = await loadPdfBuffer(quote.pdfPath);
-    return new NextResponse(buffer, {
+    const pdfArrayBuffer: ArrayBuffer = buffer.buffer.slice(
+      buffer.byteOffset,
+      buffer.byteOffset + buffer.byteLength,
+    );
+
+    return new NextResponse(pdfArrayBuffer, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `inline; filename="${quote.number}.pdf"`,
