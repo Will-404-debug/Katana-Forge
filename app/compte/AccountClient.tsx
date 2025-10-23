@@ -147,8 +147,8 @@ export default function AccountClient() {
           <p className="text-xs text-white/60">Chargement de vos katanas...</p>
         ) : katanas.length === 0 ? (
           <p className="text-xs text-white/60">
-            Vous n'avez pas encore de katana sauvegardé. Rendez-vous dans l'atelier pour enregistrer votre première
-            création.
+            Vous n&apos;avez pas encore de katana sauvegardé. Rendez-vous dans l&apos;atelier pour enregistrer votre
+            première création.
           </p>
         ) : (
           <ul className="grid gap-4">

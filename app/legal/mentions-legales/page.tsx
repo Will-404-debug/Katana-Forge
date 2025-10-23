@@ -46,7 +46,7 @@ export default function MentionsLegalesPage() {
           Telephone : +1 (559) 288-7060.
         </p>
         <p>
-          Sauvegardes et données sont distribuées sur l'infrastructure Vercel Edge Network afin de garantir
+          Sauvegardes et données sont distribuées sur l&apos;infrastructure Vercel Edge Network afin de garantir
           performance et résilience.
         </p>
       </section>
@@ -54,7 +54,7 @@ export default function MentionsLegalesPage() {
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Propriété intellectuelle</h2>
         <p>
-          L'ensemble des contenus présentés sur Katana Forge (textes, graphismes, logos, visuels 3D, vidéos) est protégé
+          L&apos;ensemble des contenus présentés sur Katana Forge (textes, graphismes, logos, visuels 3D, vidéos) est protégé
           par la législation francaise et internationale relative à la propriété intellectuelle. Toute reproduction,
           représentation ou diffusion, même partielle, est strictement interdite sans autorisation écrite préalable.
         </p>
@@ -63,9 +63,9 @@ export default function MentionsLegalesPage() {
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Responsabilité</h2>
         <p>
-          Forge Studio SAS met tout en oeuvre pour assurer l'exactitude des informations diffusées mais ne saurait être
-          tenue pour responsable des erreurs ou omissions, ni des conséquences de leur utilisation. L'utilisateur assume
-          l'intégralité des risques liés à la consultation du site.
+          Forge Studio SAS met tout en oeuvre pour assurer l&apos;exactitude des informations diffusées mais ne saurait être
+          tenue pour responsable des erreurs ou omissions, ni des conséquences de leur utilisation. L&apos;utilisateur assume
+          l&apos;intégralité des risques liés à la consultation du site.
         </p>
       </section>
     </article>

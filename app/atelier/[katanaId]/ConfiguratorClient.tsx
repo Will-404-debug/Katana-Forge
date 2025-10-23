@@ -69,6 +69,9 @@ function ensureDraftState(data: unknown): DraftState | null {
 export default function ConfiguratorClient({ katanaId, basePrice }: ConfiguratorClientProps) {
   const router = useRouter();
   const { user, refreshUser } = useAuth();
+  const userId = user?.id ?? null;
+  const userBackgroundColor = user?.backgroundColor ?? null;
+  const hasUser = Boolean(user);
 
   const isDemo = katanaId === "demo";
 
@@ -224,7 +227,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       return;
     }
 
-    const currentUserId = user?.id ?? null;
+    const currentUserId = userId;
     if (draftHydratedRef.current && hydratedUserIdRef.current === currentUserId) {
       return;
     }
@@ -242,7 +245,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
 
     const hydrate = async () => {
       try {
-        if (user) {
+        if (hasUser) {
           const response = await fetch("/api/drafts/merge", {
             method: "POST",
             headers: { "Content-Type": "application/json", ...csrfHeader() },
@@ -294,11 +297,11 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       cancelled = true;
       controller.abort();
     };
-  }, [applyDraft, isDemo, readLocalDraft, user?.id]);
+  }, [applyDraft, hasUser, isDemo, readLocalDraft, userId]);
 
   useEffect(() => {
-    if (user) {
-      const parsed = backgroundColorSchema.safeParse(user.backgroundColor);
+    if (hasUser) {
+      const parsed = backgroundColorSchema.safeParse(userBackgroundColor);
       const nextColor = parsed.success ? parsed.data : DEFAULT_BACKGROUND_COLOR;
       backgroundSyncedRef.current = nextColor;
       setBackgroundColor(nextColor);
@@ -327,14 +330,14 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
     }
     setBackgroundError(null);
-  }, [user?.id, user?.backgroundColor]);
+  }, [hasUser, userBackgroundColor, userId]);
 
   useEffect(() => {
     if (backgroundColor === backgroundSyncedRef.current) {
       return;
     }
 
-    if (!user) {
+    if (!hasUser) {
       if (typeof window !== "undefined") {
         window.localStorage.setItem(BACKGROUND_STORAGE_KEY, backgroundColor);
       }
@@ -381,7 +384,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     return () => {
       controller.abort();
     };
-  }, [backgroundColor, refreshUser, user?.id]);
+  }, [backgroundColor, hasUser, refreshUser, userId]);
 
   useEffect(() => {
     return () => {
@@ -539,7 +542,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
     return () => {
       cancelled = true;
     };
-  }, [katanaId, isDemo, user?.id]);
+  }, [katanaId, isDemo, userId]);
 
   const handleSaveKatana = async () => {
     if (!user) {
@@ -639,7 +642,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
               {quantity > 1 ? `${unitPrice} EUR par unite x ${quantity}` : `${unitPrice} EUR pour une piece`}
             </p>
             <p className="mt-2 text-xs text-white/60">
-              Base price {basePrice} EUR. Ajustez les curseurs pour visualiser l'impact sur le devis.
+              Base price {basePrice} EUR. Ajustez les curseurs pour visualiser l&apos;impact sur le devis.
             </p>
             <button
               type="button"

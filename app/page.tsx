@@ -52,7 +52,7 @@ export default function HomePage() {
           <h2 className="text-sm font-heading uppercase tracking-[0.4em] text-emberGold">Forge numérique</h2>
           <p className="text-sm leading-relaxed text-white/60 md:text-base">
             Katana Forge réunit Next.js 14, React Three Fiber et TailwindCSS pour livrer une expérience fluide et
-            responsive. Chaque intéraction retranscrit la précision d'une forge artisanale tout en restant pilotable
+            responsive. Chaque intéraction retranscrit la précision d&apos;une forge artisanale tout en restant pilotable
             depuis un navigateur moderne.
           </p>
           <ul className="grid gap-3 text-sm text-white/70 md:max-w-lg">
@@ -74,7 +74,7 @@ export default function HomePage() {
         >
           <h3 className="text-sm font-heading uppercase tracking-[0.45em] text-emberGold">Stack technique</h3>
           <p className="text-white/50">
-            Un socle moderne prêt à l'emploi : API serverless, Prisma, auth JWT et assets 3D optimisés.
+            Un socle moderne prêt à l&apos;emploi : API serverless, Prisma, auth JWT et assets 3D optimisés.
           </p>
           <div className="space-y-3 text-white/60">
             <p>Next.js 14 • App Router</p>

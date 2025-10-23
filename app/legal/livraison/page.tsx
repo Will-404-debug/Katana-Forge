@@ -30,13 +30,13 @@ export default function LivraisonPage() {
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/40 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Zones desservies</h2>
         <p>
-          Katana Forge livre en France métropolitaine, dans l'Union européenne et en Amerique du Nord. Pour toute autre
+          Katana Forge livre en France métropolitaine, dans l&apos;Union européenne et en Amerique du Nord. Pour toute autre
           destination, un devis logistique personnalisé est établi.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
-        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Modes d'expédition</h2>
+        <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Modes d&apos;expédition</h2>
         <p>
           Les lames sont expédiées via transporteur spécialisé, avec assurance ad valorem et remise contre signature.
           Un numero de suivi est communiqué dès la prise en charge.
@@ -52,14 +52,14 @@ export default function LivraisonPage() {
         </ul>
         <p>
           Les délais peuvent varier en fonction des formalités douanières. Katana Forge vous tient informé en cas
-          d'incident de transport.
+          d&apos;incident de transport.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Vérification à réception</h2>
         <p>
-          Lors de la livraison, controlez l'état du colis avant signature. En cas d'avarie, formulez des réserves
+          Lors de la livraison, controlez l&apos;état du colis avant signature. En cas d&apos;avarie, formulez des réserves
           précises sur le bon du transporteur et contactez-nous sous 48 heures à logistique@katana-forge.com.
         </p>
       </section>
