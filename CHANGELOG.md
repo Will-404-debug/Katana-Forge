@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.2](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.1...katana-forge-v1.6.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* **PDF:** ensure pdf route returns arraybuffer for NextResponse ([9d3fae3](https://github.com/Will-404-debug/Katana-Forge/commit/9d3fae3d5e7ffef521ca4bb491cb1c2076979696))
+* **PDF:** ensure pdf route returns arraybuffer for NextResponse ([b64203c](https://github.com/Will-404-debug/Katana-Forge/commit/b64203c144b06a76729825b06e2221aa1220ff70))
+
 ## [1.6.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.0...katana-forge-v1.6.1) (2025-10-23)
 
 
