@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.0...katana-forge-v1.6.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* **Lint:** resolve lint failures blocking vercel build ([5c50f66](https://github.com/Will-404-debug/Katana-Forge/commit/5c50f66763b88d9f61d22673d5976d583152d84e))
+* **Lint:** resolve lint failures blocking vercel build ([8d11680](https://github.com/Will-404-debug/Katana-Forge/commit/8d1168072dd5920a5819883e51afed45cbfb5a0a))
+
 ## [1.6.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.5.0...katana-forge-v1.6.0) (2025-10-22)
 
 
