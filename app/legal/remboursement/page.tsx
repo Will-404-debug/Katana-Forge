@@ -40,7 +40,7 @@ export default function RemboursementPage() {
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Annulation par Katana Forge</h2>
         <p>
           Katana Forge se résèrve le droit d annuler une commande lorsque des contraintes techniques ou règlementaires
-          l'imposent. Dans ce cas, toutes les sommes versées sont intégralement remboursées sous 7 jours ouvrables.
+          l&apos;imposent. Dans ce cas, toutes les sommes versées sont intégralement remboursées sous 7 jours ouvrables.
         </p>
       </section>
 
@@ -48,7 +48,7 @@ export default function RemboursementPage() {
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Procédure de remboursement</h2>
         <p>
           Les remboursements sont effectués par le moyen de paiement initial ou par virement bancaire. Un email de
-          confirmation est adressé au client au moment de l'émission du remboursement.
+          confirmation est adressé au client au moment de l&apos;émission du remboursement.
         </p>
       </section>
 

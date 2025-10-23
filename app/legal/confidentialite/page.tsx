@@ -30,7 +30,7 @@ export default function ConfidentialitePage() {
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/40 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Principes généraux</h2>
         <p>
-          Katana Forge collecte uniquement les donnees strictement nécessaires à l'expérience de configuration et à la
+          Katana Forge collecte uniquement les donnees strictement nécessaires à l&apos;expérience de configuration et à la
           gestion de la relation client. Les traitements sont effectués conformément au Règlement Général sur la
           Protection des Données (RGPD) et reposent sur les fondements juridiques suivants : exécution du contrat,
           intérêt légitime pour la sécurisation de la plateforme et consentement pour la communication marketing.
@@ -41,9 +41,9 @@ export default function ConfidentialitePage() {
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Données collectées</h2>
         <ul className="space-y-2">
           <li>Identité : nom, prénom, adresse email et téléphone.</li>
-          <li>Configuration : préférences d'acier, tsuka, garde, lame et historique de devis.</li>
+          <li>Configuration : préférences d&apos;acier, tsuka, garde, lame et historique de devis.</li>
           <li>
-            Données techniques : journaux anonymisés pour la sécurité, cookies de mesure d'audience et identifiants de
+            Données techniques : journaux anonymisés pour la sécurité, cookies de mesure d&apos;audience et identifiants de
             session.
           </li>
         </ul>
@@ -53,13 +53,13 @@ export default function ConfidentialitePage() {
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Vos droits</h2>
         <p>
-          Vous disposez des droits d'accès, de rectification, d'éffacement, de limitation, d'opposition et de portabilité
+          Vous disposez des droits d&apos;accès, de rectification, d&apos;éffacement, de limitation, d&apos;opposition et de portabilité
           sur vos données personnelles. Vous pouvez définir des directives relatives au sort de vos informations après
           votre décès.
         </p>
         <p>
-          Pour exercer vos droits, adressez votre demande accompagnée d'une preuve d'identité a notre DPO via le contact
-          ci-dessous. Une réponse vous sera apportée dans un délai d'un mois maximum.
+          Pour exercer vos droits, adressez votre demande accompagnée d&apos;une preuve d&apos;identité a notre DPO via le contact
+          ci-dessous. Une réponse vous sera apportée dans un délai d&apos;un mois maximum.
         </p>
       </section>
 
@@ -91,7 +91,7 @@ export default function ConfidentialitePage() {
           aux exigences du RGPD : Vercel (hébergement), Prisma (gestion des données), Mailjet (communication transactionnelle).
         </p>
         <p>
-          Des clauses contractuelles types encadrent tout transfert en dehors de l'Union européenne.
+          Des clauses contractuelles types encadrent tout transfert en dehors de l&apos;Union européenne.
         </p>
       </section>
     </article>

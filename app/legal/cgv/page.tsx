@@ -31,7 +31,7 @@ export default function CgvPage() {
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Objet</h2>
         <p>
           Les présentes conditions générales de vente (CGV) régissent les ventes réalisées via le configurateur Katana
-          Forge. Toute commande suppose l'acceptation pleine et entière des CGV par le client professionnel ou
+          Forge. Toute commande suppose l&apos;acceptation pleine et entière des CGV par le client professionnel ou
           particulier.
         </p>
       </section>
@@ -40,15 +40,15 @@ export default function CgvPage() {
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Tarifs et paiement</h2>
         <p>
           Les prix affichés sur le configurateur sont exprimés en euros hors taxes. Un devis detaillé est généré en fin
-          de configuration et valide durant 30 jours. Le paiement s'effectue via virement bancaire ou carte bancaire
-          securisée à hauteur de 40 pour cent d'acompte, le solde étant dû à la livraison.
+          de configuration et valide durant 30 jours. Le paiement s&apos;effectue via virement bancaire ou carte bancaire
+          securisée à hauteur de 40 pour cent d&apos;acompte, le solde étant dû à la livraison.
         </p>
       </section>
 
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Production et délais</h2>
         <p>
-          La conception sur-mesure démarre des réception de l'acompte. Les délais moyens de fabrication sont de 4 a 8
+          La conception sur-mesure démarre des réception de l&apos;acompte. Les délais moyens de fabrication sont de 4 a 8
           semaines selon la complexité des finitions demandées. Katana Forge informera le client de tout retard majeur et
           proposera, le cas écheant, une nouvelle échéance ou un remboursement.
         </p>
@@ -57,8 +57,8 @@ export default function CgvPage() {
       <section className="space-y-4 rounded-3xl border border-white/10 bg-black/30 p-8 backdrop-blur">
         <h2 className="text-lg font-heading uppercase tracking-[0.3em] text-white">Garanties</h2>
         <p>
-          Les katanas bénéficient d'une garantie de conformité de 24 mois couvrant les défauts de forge et de matériau.
-          Toute demande doit être formulée par écrit avec photo et numéro de commande. Les dommages résultant d'une
+          Les katanas bénéficient d&apos;une garantie de conformité de 24 mois couvrant les défauts de forge et de matériau.
+          Toute demande doit être formulée par écrit avec photo et numéro de commande. Les dommages résultant d&apos;une
           utilisation non conforme ne sont pas couverts.
         </p>
       </section>
