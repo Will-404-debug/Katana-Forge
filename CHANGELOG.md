@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.3](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.2...katana-forge-v1.6.3) (2025-10-23)
+
+
+### Bug Fixes
+
+* **PDF:** send pdf response as uint8array for nextresponse ([a00a90b](https://github.com/Will-404-debug/Katana-Forge/commit/a00a90bcb3a7707a7fe148ff1a27da803f0e7b6b))
+* **PDF:** send pdf response as uint8array for nextresponse ([6df5d75](https://github.com/Will-404-debug/Katana-Forge/commit/6df5d75a21a5ee5a1dbbf5f71ee0f5c3ffd53239))
+
 ## [1.6.2](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.1...katana-forge-v1.6.2) (2025-10-23)
 
 
