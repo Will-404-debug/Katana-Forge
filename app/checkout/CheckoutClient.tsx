@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import type { Route } from "next";
+import { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm, useWatch } from "react-hook-form";
+import type { Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  CheckoutPayloadSchema,
-  type CheckoutPayload,
-} from "@/lib/validation/checkout";
+import { CheckoutPayloadSchema, type CheckoutPayload } from "@/lib/validation/checkout";
 import { computeLineTotals, sumCents, toEuroString } from "@/lib/money";
 import { csrfHeader } from "@/lib/csrf";
 import AddressForm from "./components/AddressForm";
@@ -21,14 +20,23 @@ type CheckoutStatus =
   | { type: "quote" }
   | { type: "pay" };
 
+export type LegalLink = {
+  href: Route;
+  label: string;
+};
+
+export type CheckoutFormValues = Omit<CheckoutPayload, "consent"> & {
+  consent: boolean;
+};
+
 type Props = {
-  defaultValues: CheckoutPayload;
-  legalLinks: readonly { href: string; label: string }[];
+  defaultValues: CheckoutFormValues;
+  legalLinks: readonly LegalLink[];
 };
 
 const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
-  const methods = useForm<CheckoutPayload>({
-    resolver: zodResolver(CheckoutPayloadSchema),
+  const methods = useForm<CheckoutFormValues>({
+    resolver: zodResolver(CheckoutPayloadSchema) as Resolver<CheckoutFormValues>,
     mode: "onChange",
     defaultValues,
   });
@@ -340,7 +348,7 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
 
 export default CheckoutClient;
 
-const withMetadata = (payload: CheckoutPayload): CheckoutPayload => ({
+const withMetadata = (payload: CheckoutFormValues): CheckoutPayload => ({
   ...payload,
   consent: true,
   consentAt: new Date().toISOString(),
