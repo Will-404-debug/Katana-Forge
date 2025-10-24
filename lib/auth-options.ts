@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import type { NextAuthOptions } from "next-auth";
+
 import GoogleProvider from "next-auth/providers/google";
 
 import { hashPassword } from "@/lib/auth";
@@ -54,7 +54,24 @@ async function upsertGoogleUser(params: {
   });
 }
 
-export const authOptions: NextAuthOptions = {
+type AuthOptions = {
+  session?: {
+    strategy?: string;
+  };
+  secret?: string;
+  providers: unknown[];
+  pages?: {
+    signIn?: string;
+  };
+  callbacks?: {
+    signIn?: (...args: any[]) => unknown;
+    jwt?: (...args: any[]) => unknown;
+    session?: (...args: any[]) => unknown;
+    redirect?: (...args: any[]) => unknown;
+  };
+};
+
+export const authOptions: AuthOptions = {
   session: {
     strategy: "jwt",
   },

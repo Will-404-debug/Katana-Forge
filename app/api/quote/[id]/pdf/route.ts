@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 import { prisma } from "@/lib/prisma";
 import { loadPdfBuffer } from "@/lib/storage";
 
@@ -15,22 +13,21 @@ export async function GET(request: Request, context: { params: { id: string } })
   });
 
   if (!quote || !quote.pdfPath) {
-    return NextResponse.json({ error: "Devis introuvable" }, { status: 404 });
+    return Response.json({ error: "Devis introuvable" }, { status: 404 });
   }
 
   // TODO: replace email confirmation with signed token when customer accounts are available.
   if (!emailParam || emailParam.toLowerCase() !== quote.customer.email.toLowerCase()) {
-    return NextResponse.json(
-      { error: "Accès non autorisé à ce devis" },
-      { status: 403 },
-    );
+    return Response.json({ error: "Acces non autorise a ce devis" }, { status: 403 });
   }
 
   try {
     const buffer = await loadPdfBuffer(quote.pdfPath);
-    const pdfBytes = new Uint8Array(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+    const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength) as ArrayBuffer;
 
-    return new NextResponse(pdfBytes, {
+    const pdfBlob = new Blob([arrayBuffer], { type: "application/pdf" });
+
+    return new Response(pdfBlob, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `inline; filename="${quote.number}.pdf"`,
@@ -38,9 +35,6 @@ export async function GET(request: Request, context: { params: { id: string } })
       },
     });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Impossible de charger le PDF" },
-      { status: 500 },
-    );
+    return Response.json({ error: "Impossible de charger le PDF" }, { status: 500 });
   }
 }

@@ -1,4 +1,3 @@
-import type { Attachment } from "nodemailer/lib/mailer";
 import nodemailer from "nodemailer";
 import { Resend } from "resend";
 
@@ -43,7 +42,7 @@ export const sendMail = async (input: SendMailInput) => {
   }
 
   const transporter = await getTransporter();
-  const mailAttachments: Attachment[] =
+  const mailAttachments =
     input.attachments?.map((item) => ({
       filename: item.filename,
       content: item.content,

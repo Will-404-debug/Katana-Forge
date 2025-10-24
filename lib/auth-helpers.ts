@@ -2,7 +2,8 @@
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
+import type { Session } from "next-auth";
 
 import { prisma } from "./prisma";
 import { decodeAuthToken } from "./auth";
@@ -92,7 +93,7 @@ function extractToken(req?: IncomingRequest) {
 
 async function getSessionUser() {
   try {
-    const session = await getServerSession(authOptions);
+    const session = (await getServerSession(authOptions as any)) as Session | null;
 
     if (!session?.user) {
       return null;

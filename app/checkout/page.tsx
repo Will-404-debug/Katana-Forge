@@ -3,8 +3,8 @@ import { cookies } from "next/headers";
 
 import { prisma } from "@/lib/prisma";
 import { getAuthenticatedUser } from "@/lib/auth-helpers";
-import type { CheckoutPayload } from "@/lib/validation/checkout";
 import CheckoutClient from "./CheckoutClient";
+import type { CheckoutFormValues, LegalLink } from "./CheckoutClient";
 
 const DEFAULT_VAT_RATE = 20;
 const DEFAULT_SHIPPING_CENTS = 2500;
@@ -14,7 +14,7 @@ const LEGAL_LINKS = [
   { href: "/legal/privacy", label: "Politique de confidentialité" },
   { href: "/legal/refund", label: "Politique de remboursement" },
   { href: "/legal/shipping", label: "Conditions de livraison" },
-] as const;
+] satisfies readonly LegalLink[];
 
 const BASE_PRICE = Number.parseFloat(process.env.BASE_PRICE ?? "420");
 
@@ -50,7 +50,7 @@ export default async function CheckoutPage() {
   );
 }
 
-const buildInitialValues = async (): Promise<CheckoutPayload> => {
+const buildInitialValues = async (): Promise<CheckoutFormValues> => {
   const user = await getAuthenticatedUser();
   const draft = await findActiveDraft(user?.id);
   const items = draft ? [draftToItem(draft)] : [defaultItem()];
