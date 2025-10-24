@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.4](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.3...katana-forge-v1.6.4) (2025-10-24)
+
+
+### Bug Fixes
+
+* **build:** resolve type issues blocking build ([40737aa](https://github.com/Will-404-debug/Katana-Forge/commit/40737aa90abfe7d621099b56fe12d389c5e4fbff))
+* **build:** resolve type issues blocking build ([a6314d7](https://github.com/Will-404-debug/Katana-Forge/commit/a6314d7c15302d320b2a631ace926e2f116102d5))
+
 ## [1.6.3](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.2...katana-forge-v1.6.3) (2025-10-24)
 
 
