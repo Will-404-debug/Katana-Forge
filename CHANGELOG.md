@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.7.0...katana-forge-v1.7.1) (2025-10-25)
+
+
+### Bug Fixes
+
+* **auth:** let nextauth routes bypass csrf guard ([8d091a5](https://github.com/Will-404-debug/Katana-Forge/commit/8d091a5b9a9b7bcc96adfcc73fd5c7b4bddc9704))
+* **auth:** let nextauth routes bypass csrf guard ([98f07e4](https://github.com/Will-404-debug/Katana-Forge/commit/98f07e4fd591d6dc90e298c56cf01130946a0307))
+
 ## [1.7.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.4...katana-forge-v1.7.0) (2025-10-25)
 
 
