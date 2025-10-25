@@ -2,13 +2,17 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const CSRF_COOKIE = "kf.csrf";
 const CSRF_HEADER = "x-csrf-token";
+const CUSTOM_AUTH_MUTATIONS = new Set(["/api/auth/login", "/api/auth/register", "/api/auth/logout"]);
 const encoder = new TextEncoder();
 
 export function middleware(request: NextRequest) {
   const method = request.method.toUpperCase();
   const pathname = request.nextUrl.pathname;
 
-  if (isMutation(method) && pathname.startsWith("/api/")) {
+  const isCustomAuthRoute = pathname.startsWith("/api/auth/") && CUSTOM_AUTH_MUTATIONS.has(pathname);
+  const isNextAuthInternalRoute = pathname.startsWith("/api/auth/") && !isCustomAuthRoute;
+
+  if (isMutation(method) && pathname.startsWith("/api/") && !isNextAuthInternalRoute) {
     const originResponse = ensureOriginIsAllowed(request);
     if (originResponse) {
       return originResponse;
