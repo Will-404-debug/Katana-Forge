@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.7.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.4...katana-forge-v1.7.0) (2025-10-25)
+
+
+### Features
+
+* **prisma:** migrate database to postgres ([c04e77b](https://github.com/Will-404-debug/Katana-Forge/commit/c04e77bb9b98de37ba4d3fdf028373c41043cd18))
+* **prisma:** migrate database to postgres ([dedca2c](https://github.com/Will-404-debug/Katana-Forge/commit/dedca2cd24107cc80b2c39d93f18ab6083390898))
+
 ## [1.6.4](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.6.3...katana-forge-v1.6.4) (2025-10-24)
 
 
