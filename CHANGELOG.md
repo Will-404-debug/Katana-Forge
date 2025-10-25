@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.7.1...katana-forge-v1.8.0) (2025-10-25)
+
+
+### Features
+
+* **icon:** add app icon for favicon support ([f3d9942](https://github.com/Will-404-debug/Katana-Forge/commit/f3d99429610cd49e633211bd849c72f2573e6ddd))
+* **icon:** add app icon for favicon support ([32af06a](https://github.com/Will-404-debug/Katana-Forge/commit/32af06a312da361a3b4e2c7d6b97935874f14f9c))
+
 ## [1.7.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.7.0...katana-forge-v1.7.1) (2025-10-25)
 
 
