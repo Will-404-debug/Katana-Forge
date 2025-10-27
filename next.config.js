@@ -2,11 +2,13 @@
 const nextConfig = {
   experimental: {
     typedRoutes: true,
+    outputFileTracingExcludes: {
+      '*': [
+        '.next/cache/**',
+        '.git/**',
+      ],
+    },
   },
-  outputFileTracingExcludes: [
-    '**/.next/cache/**',
-    '**/.git/**',
-  ],
 };
 
 module.exports = nextConfig;
