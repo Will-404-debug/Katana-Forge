@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.0...katana-forge-v1.8.1) (2025-10-27)
+
+
+### Bug Fixes
+
+* **header:** ensure site header stays above overlapping content ([da3a8c8](https://github.com/Will-404-debug/Katana-Forge/commit/da3a8c87e32a81b19073455edbb91920bf154d1f))
+* **header:** ensure site header stays above overlapping content ([aa6638c](https://github.com/Will-404-debug/Katana-Forge/commit/aa6638c7d6c9b93bcd50a9c91eb96a23b7271650))
+
 ## [1.8.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.7.1...katana-forge-v1.8.0) (2025-10-25)
 
 
