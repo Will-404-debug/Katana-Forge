@@ -21,7 +21,7 @@ export default function SiteHeader() {
   };
 
   return (
-    <header className="border-b border-white/10 bg-black/40 backdrop-blur">
+    <header className="border-b border-white/10 bg-black/40 backdrop-blur" style={{position: "relative", zIndex: 5}}>
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-5 md:flex-row md:items-center md:justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Image
