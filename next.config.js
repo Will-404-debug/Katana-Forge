@@ -3,7 +3,7 @@ const nextConfig = {
   experimental: {
     typedRoutes: true,
   },
-  outputFileTracingIgnores: [
+  outputFileTracingExcludes: [
     '**/.next/cache/**',
     '**/.git/**',
   ],
