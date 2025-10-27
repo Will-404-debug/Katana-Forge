@@ -2,9 +2,6 @@
   "functions": {
     "app/api/**": {
       "excludeFiles": "{.next/cache/**,.git/**}"
-    },
-    "api/**": {
-      "excludeFiles": "{.next/cache/**,.git/**}"
     }
   }
 }
