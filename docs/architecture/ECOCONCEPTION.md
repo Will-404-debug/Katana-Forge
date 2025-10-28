@@ -51,10 +51,10 @@ pie
 ## Suivi & mesures
 ```mermaid
 flowchart TB
-    monitor[Collecte metriques\n(Web Vitals, Lighthouse)]
-    analyze[Analyse hebdomadaire\nBudget vs reel]
+    monitor["Collecte metriques<br/>Web Vitals, Lighthouse"]
+    analyze["Analyse hebdomadaire<br/>Budget vs reel"]
     backlog[Backlog eco-actions]
-    deploy[Optimisations\n(lazy, compression, cache)]
+    deploy["Optimisations<br/>lazy, compression, cache"]
     monitor --> analyze --> backlog --> deploy --> monitor
 ```
 

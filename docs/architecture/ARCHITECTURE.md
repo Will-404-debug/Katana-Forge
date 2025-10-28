@@ -12,10 +12,10 @@ Les flux suivent le schema : `UI -> API -> Service -> DAO -> DB`, avec retours d
 ## C4 niveau Contexte
 ```mermaid
 flowchart LR
-    user[Client web\n(Aiko & Kenji)]
-    forge[Katana Forge\nApplication Next.js]
-    api[API fournisseurs\n(Prisma/DB, Email, Paiement futur)]
-    admin[Commercial interne\n(Claire)]
+    user["Client web<br/>Aiko & Kenji"]
+    forge["Katana Forge<br/>Application Next.js"]
+    api["API fournisseurs<br/>Prisma/DB, Email, Paiement futur"]
+    admin["Commercial interne<br/>Claire"]
 
     user --> forge
     admin --> forge
@@ -26,13 +26,13 @@ flowchart LR
 ```mermaid
 flowchart TB
     subgraph browser[Browser / Device]
-        ui[UI - Next.js App Router\nReact components + Three.js]
+        ui["UI - Next.js App Router<br/>React components + Three.js"]
     end
 
     subgraph next[Next.js Server]
-        api[API Layer\nRoute Handlers]
-        service[Service Layer\nLogique metier]
-        dao[DAO Layer\nPrisma Client]
+        api["API Layer<br/>Route Handlers"]
+        service["Service Layer<br/>Logique metier"]
+        dao["DAO Layer<br/>Prisma Client"]
     end
 
     db[(SQLite / PostgreSQL)]
@@ -48,11 +48,11 @@ flowchart TB
 ## C4 niveau Composants (exemple Route `/api/quotes`)
 ```mermaid
 flowchart LR
-    handler[`POST /api/quotes`\nRoute Handler]
-    validator[Zod Schema\nquotePayloadSchema]
-    pricing[Service `quoteService`\nCalcul prix + validations]
-    repo[DAO `quoteRepository`\nPrisma operations]
-    db[(Table `Quote` + `User`)]
+    handler["POST /api/quotes<br/>Route Handler"]
+    validator["Zod Schema<br/>quotePayloadSchema"]
+    pricing["Service quoteService<br/>Calcul prix + validations"]
+    repo["DAO quoteRepository<br/>Prisma operations"]
+    db[(Tables Quote + User)]
 
     handler --> validator
     validator --> pricing
