@@ -1,0 +1,37 @@
+{
+  "auth_valid_user": {
+    "email": "aiko@example.com",
+    "password": "Katana!2025"
+  },
+  "auth_invalid_password": {
+    "email": "aiko@example.com",
+    "password": "wrongpass"
+  },
+  "quote_valid": {
+    "handleColor": "#2b1d14",
+    "bladeTint": "#d7d3c8",
+    "metalness": 0.65,
+    "roughness": 0.35
+  },
+  "quote_malicious": {
+    "handleColor": "<script>alert(1)</script>",
+    "bladeTint": "#d7d3c8",
+    "metalness": 0.65,
+    "roughness": 0.35
+  },
+  "cart_basic": [
+    { "id": "kat_aiko_alpha", "quantity": 2 },
+    { "id": "kat_kenji_master", "quantity": 1 }
+  ],
+  "cart_negative": {
+    "id": "kat_aiko_alpha",
+    "quantity": -5
+  },
+  "forbidden_profile": {
+    "path": "/compte"
+  },
+  "ui_header_cta": {
+    "path": "/",
+    "selector": "text=Entrer dans la forge"
+  }
+}

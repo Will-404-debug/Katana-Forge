@@ -59,8 +59,9 @@ export const useCartStore = create<CartState>((set) => ({
         totalQuantity: computeTotal(nextItems),
       };
     }),
-  clear: () => ({
-    items: [],
-    totalQuantity: 0,
-  }),
+  clear: () =>
+    set(() => ({
+      items: [],
+      totalQuantity: 0,
+    })),
 }));
