@@ -90,6 +90,11 @@ public/models/katana.glb         # modele 3D placeholder (lame + tsuka)
 - `GET|PUT|DELETE /api/katanas/:id` : lecture/mise à jour/suppression (auth requise)
 - `POST /api/quotes` : calcule un devis et journalise la demande (optionnellement rattache à un utilisateur)
 
+## Plan de production
+- [Plan de production](docs/project/PLAN_DE_PRODUCTION.md) : objectifs, jalons et RACI sur quatre semaines.
+- [Norma qualite](docs/qa/NORMA_QUALITE.md) : checklists lint, types et revues de code.
+- [Labels GitHub](docs/release/LABELS.md) : nomenclature pour le board Backlog / En cours / Review / Done.
+
 ## Releases & Tags (automatique)
 
 Ce dépôt utilise **Release Please** pour gérer **versioning SemVer**, **tags** (`vX.Y.Z`), **release GitHub** et **CHANGELOG.md** automatiquement.
