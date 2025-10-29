@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.3](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.2...katana-forge-v1.8.3) (2025-10-29)
+
+
+### Bug Fixes
+
+* **icon:** expose icon metadata for iOS ([6d591ca](https://github.com/Will-404-debug/Katana-Forge/commit/6d591ca9ea6023d5240e655a3e02cba5ba0a66db))
+* **icon:** expose icon metadata for iOS ([6741f32](https://github.com/Will-404-debug/Katana-Forge/commit/6741f327ef8ab4f4918cfdcc429aa0bb008d498d))
+
 ## [1.8.2](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.1...katana-forge-v1.8.2) (2025-10-29)
 
 
