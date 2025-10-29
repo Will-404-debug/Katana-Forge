@@ -29,6 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      NEXTAUTH_SECRET: release-please-nextauth-secret
+      JWT_SECRET: release-please-jwt-secret
+      NEXTAUTH_URL: https://example.com
+      APP_URL: https://example.com
+      DATABASE_URL: file:./release.db
     steps:
       - name: Checkout
         uses: actions/checkout@v4
