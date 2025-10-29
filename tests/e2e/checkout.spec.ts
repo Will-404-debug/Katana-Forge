@@ -11,8 +11,8 @@ dotenvConfig({ path: ".env.local" });
 dotenvConfig();
 
 const prisma = new PrismaClient();
-const stripeSecret = process.env.STRIPE_SECRET_KEY;
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const stripeSecret = process.env.STRIPE_SECRET_KEY ?? "";
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? "";
 const mailhogUrl = process.env.MAILHOG_URL ?? "http://localhost:8025";
 
 test.afterAll(async () => {
