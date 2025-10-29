@@ -1,0 +1,54 @@
+name: Quality
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint (JSON report)
+        id: eslint
+        continue-on-error: true
+        run: |
+          mkdir -p reports
+          npx eslint . --format json --output-file reports/eslint-report.json
+
+      - name: Run TypeScript strict check
+        id: tsc
+        continue-on-error: true
+        run: |
+          mkdir -p reports
+          npx tsc --noEmit --pretty false > reports/tsc-report.txt
+
+      - name: Upload raw reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-reports-${{ github.run_id }}
+          path: reports
+          if-no-files-found: warn
+
+      - name: Fail on ESLint errors
+        if: steps.eslint.outcome == 'failure'
+        run: exit 1
+
+      - name: Fail on TypeScript errors
+        if: steps.tsc.outcome == 'failure'
+        run: exit 1
