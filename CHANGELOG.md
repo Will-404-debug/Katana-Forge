@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.4](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.3...katana-forge-v1.8.4) (2025-10-29)
+
+
+### Bug Fixes
+
+* **ci:** target release tag when uploading artifacts ([be8c562](https://github.com/Will-404-debug/Katana-Forge/commit/be8c56235d3a62f971262d542563baf68eaffaa4))
+* **ci:** target release tag when uploading artifacts ([65851cf](https://github.com/Will-404-debug/Katana-Forge/commit/65851cf18db5c366982bd7fcc4d6f83249e27269))
+
 ## [1.8.3](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.2...katana-forge-v1.8.3) (2025-10-29)
 
 
