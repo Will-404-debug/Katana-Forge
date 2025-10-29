@@ -35,6 +35,24 @@ jobs:
       NEXTAUTH_URL: https://example.com
       APP_URL: https://example.com
       DATABASE_URL: file:./release.db
+      GOOGLE_CLIENT_ID: release-google-client-id
+      GOOGLE_CLIENT_SECRET: release-google-client-secret
+      STRIPE_SECRET_KEY: sk_release_dummy
+      STRIPE_WEBHOOK_SECRET: whsec_release_dummy
+      SMTP_HOST: localhost
+      SMTP_PORT: "1025"
+      SMTP_USER: ""
+      SMTP_PASS: ""
+      MAIL_FROM: "Katana Forge <no-reply@kfor.ge>"
+      PDF_STORAGE_DIR: ./storage/quotes
+      RESEND_API_KEY: ""
+      FEATURE_RESEND: "false"
+      COMPANY_NAME: Katana Forge
+      COMPANY_SIRET: 00000000000000
+      COMPANY_VAT: FRXX999999999
+      COMPANY_ADDRESS: "4 rue des Forgerons|69002 Lyon|France"
+      COMPANY_PHONE: "+33 7 63 78 42 10"
+      COMPANY_WEBSITE: https://katanaforge.fr
     steps:
       - name: Checkout
         uses: actions/checkout@v4
