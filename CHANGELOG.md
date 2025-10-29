@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.2](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.1...katana-forge-v1.8.2) (2025-10-29)
+
+
+### Bug Fixes
+
+* **tests:** enforce stripe secrets as strings for ci typecheck ([1644f44](https://github.com/Will-404-debug/Katana-Forge/commit/1644f441f3443d7c6ebe1e89935e8963a7a2868c))
+* **tests:** enforce stripe secrets as strings for ci typecheck ([7a1234a](https://github.com/Will-404-debug/Katana-Forge/commit/7a1234ae89b36cea017c6efda6cde92450ba5d6b))
+
 ## [1.8.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.0...katana-forge-v1.8.1) (2025-10-27)
 
 
