@@ -11,6 +11,10 @@ const noto = Noto_Sans_JP({ subsets: ["latin"], variable: "--font-heading" });
 export const metadata: Metadata = {
   title: "Katana Forge",
   description: "Atelier de configuration 3D pour katanas sur-mesure.",
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/icon.png", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
