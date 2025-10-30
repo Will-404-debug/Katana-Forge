@@ -42,6 +42,9 @@ export default function SiteHeader() {
           <Link className="transition hover:text-emberGold" href="/atelier/demo">
             Atelier
           </Link>
+          <Link className="transition hover:text-emberGold" href="/cart">
+            Panier
+          </Link>
 
           {initializing ? (
             <span className="text-white/50">Chargement...</span>

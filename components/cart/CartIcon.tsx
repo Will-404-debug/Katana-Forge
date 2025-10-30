@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 import { useCartStore } from "@/lib/stores/cart-store";
@@ -16,10 +17,10 @@ export default function CartIcon() {
   }
 
   return (
-    <button
-      type="button"
+    <Link
+      href="/cart"
       className="relative flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/80 transition hover:border-emberGold hover:text-emberGold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emberGold/60"
-      aria-label={`Panier (${displayCount} article${totalQuantity > 1 ? "s" : ""})`}
+      aria-label={`Ouvrir le panier (${displayCount} article${totalQuantity > 1 ? "s" : ""})`}
       data-testid="cart-icon-authenticated"
     >
       <CartGlyph className="h-5 w-5" />
@@ -29,7 +30,7 @@ export default function CartIcon() {
       >
         {displayCount}
       </span>
-    </button>
+    </Link>
   );
 }
 
@@ -50,13 +51,13 @@ function GuestCartIcon({ isLoading = false }: { isLoading?: boolean }) {
           isLoading ? "animate-pulse text-white/30" : "hover:border-emberGold/50 hover:text-white/60"
         }`}
         aria-describedby="cart-login-tooltip"
-        aria-label="Connexion requise pour accéder au panier"
+        aria-label="Connexion requise pour acceder au panier"
         disabled
         onFocus={() => setTooltipVisible(true)}
         onBlur={() => setTooltipVisible(false)}
       >
         <CartGlyph className="h-5 w-5" />
-        <span className="sr-only">Connectez-vous pour accéder au panier</span>
+        <span className="sr-only">Connectez-vous pour acceder au panier</span>
       </button>
 
       <div
@@ -66,7 +67,7 @@ function GuestCartIcon({ isLoading = false }: { isLoading?: boolean }) {
           tooltipVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        Connectez-vous pour accéder au panier.
+        Connectez-vous pour acceder au panier.
       </div>
     </div>
   );
