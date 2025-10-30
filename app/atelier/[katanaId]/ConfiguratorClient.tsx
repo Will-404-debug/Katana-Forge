@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import dynamic from "next/dynamic";
+import { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import UIControls from "@/components/configurator/UIControls";
 import { useAuth } from "@/components/auth/AuthProvider";
 import type { KatanaConfiguration } from "@/lib/validation";
@@ -12,19 +11,54 @@ import { DEFAULT_BACKGROUND_COLOR, backgroundColorSchema } from "@/lib/backgroun
 import type { DraftSnapshot } from "@/lib/drafts";
 import { parseDraftSnapshot } from "@/lib/drafts";
 import { csrfHeader } from "@/lib/csrf";
+import { CART_MAX_ITEM_QTY, useCartStore } from "@/lib/stores/cart-store";
 
-const KatanaCanvas = dynamic(() => import("@/components/configurator/KatanaCanvas"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.4em] text-white/50">
-      Chargement de l&apos;atelier 3D...
-    </div>
-  ),
-});
+const KatanaCanvas = lazy(() => import("@/components/configurator/KatanaCanvas"));
+
+const KatanaCanvasFallback = () => (
+  <div className="flex h-full items-center justify-center text-xs uppercase tracking-[0.4em] text-white/50">
+    Chargement de l&apos;atelier 3D...
+  </div>
+);
 
 const BACKGROUND_STORAGE_KEY = "katana-background-color";
 const DRAFT_STORAGE_KEY = "katana-draft";
 const DRAFT_SYNC_DELAY = 600;
+const DEFAULT_VAT_RATE = 20;
+const CART_ITEM_FALLBACK_NAME = "Katana forge sur mesure";
+
+const buildCartSignature = (params: { katanaId: string; config: Pick<KatanaConfiguration, "handleColor" | "bladeTint" | "metalness" | "roughness"> }) => {
+  const { katanaId, config } = params;
+  const baseId = katanaId.toLowerCase();
+  return [
+    baseId,
+    config.handleColor.toLowerCase(),
+    config.bladeTint.toLowerCase(),
+    config.metalness.toFixed(4),
+    config.roughness.toFixed(4),
+  ].join("|");
+};
+
+const hashString = (value: string) => {
+  let hash = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    hash = Math.imul(31, hash) + value.charCodeAt(index);
+  }
+  return Math.abs(hash);
+};
+
+const deriveSkuFromSignature = (signature: string) => {
+  const hash = hashString(signature);
+  return `KAT-${hash.toString(36).toUpperCase().padStart(6, "0").slice(0, 8)}`;
+};
+
+const normaliseCartName = (name: string | null | undefined) => {
+  if (!name) {
+    return CART_ITEM_FALLBACK_NAME;
+  }
+  const trimmed = name.trim();
+  return trimmed.length === 0 ? CART_ITEM_FALLBACK_NAME : trimmed;
+};
 
 type ConfiguratorClientProps = {
   katanaId: string;
@@ -88,6 +122,9 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   const [saveError, setSaveError] = useState<string | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>(DEFAULT_BACKGROUND_COLOR);
   const [backgroundError, setBackgroundError] = useState<string | null>(null);
+  const addCartItem = useCartStore((state) => state.addItem);
+  const [cartMessage, setCartMessage] = useState<string | null>(null);
+  const [cartError, setCartError] = useState<string | null>(null);
 
   const backgroundSyncedRef = useRef<string>(DEFAULT_BACKGROUND_COLOR);
   const backgroundRequestRef = useRef<AbortController | null>(null);
@@ -98,6 +135,7 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   const lastDraftHashRef = useRef<string | null>(null);
   const lastServerDraftHashRef = useRef<string | null>(null);
   const hydratedUserIdRef = useRef<string | null>(null);
+  const cartFeedbackTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const saveDraftLocally = useCallback((draft: DraftState) => {
     if (typeof window === "undefined") {
@@ -393,9 +431,18 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
   }, []);
 
   useEffect(() => {
+    if (hasUser) {
+      setCartError(null);
+    }
+  }, [hasUser]);
+
+  useEffect(() => {
     return () => {
       if (draftSaveTimeoutRef.current) {
         clearTimeout(draftSaveTimeoutRef.current);
+      }
+      if (cartFeedbackTimeoutRef.current) {
+        clearTimeout(cartFeedbackTimeoutRef.current);
       }
     };
   }, []);
@@ -472,6 +519,49 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
       setErrorMessage(error instanceof Error ? error.message : "Impossible de calculer le devis");
     }
   };
+
+  const handleAddToCart = useCallback(() => {
+    if (cartFeedbackTimeoutRef.current) {
+      clearTimeout(cartFeedbackTimeoutRef.current);
+      cartFeedbackTimeoutRef.current = null;
+    }
+
+    if (!hasUser) {
+      setCartMessage(null);
+      setCartError("Connectez-vous pour utiliser le panier.");
+      return;
+    }
+
+    try {
+      const qty = Math.min(Math.max(quantity, 1), CART_MAX_ITEM_QTY);
+      const signature = buildCartSignature({ katanaId, config });
+      const sku = deriveSkuFromSignature(signature);
+      const name = normaliseCartName(katanaName);
+      const unitCents = Math.max(Math.round(unitPrice * 100), 0);
+
+      addCartItem({
+        id: signature,
+        sku,
+        name,
+        qty,
+        unitCents,
+        vatRatePct: DEFAULT_VAT_RATE,
+      });
+
+      setCartError(null);
+      setCartMessage(`Ajout au panier confirmAc (${qty} article${qty > 1 ? "s" : ""}).`);
+
+      cartFeedbackTimeoutRef.current = setTimeout(() => {
+        setCartMessage(null);
+        cartFeedbackTimeoutRef.current = null;
+      }, 4000);
+    } catch (cartException) {
+      setCartMessage(null);
+      setCartError(
+        cartException instanceof Error ? cartException.message : "Ajout au panier impossible",
+      );
+    }
+  }, [addCartItem, config, hasUser, katanaId, katanaName, quantity, unitPrice]);
 
   useEffect(() => {
     if (isDemo) {
@@ -615,7 +705,9 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
 
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
         <div className="aspect-video overflow-hidden rounded-3xl border border-white/10 bg-black/40">
-          <KatanaCanvas config={config} backgroundColor={backgroundColor} />
+          <Suspense fallback={<KatanaCanvasFallback />}>
+            <KatanaCanvas config={config} backgroundColor={backgroundColor} />
+          </Suspense>
         </div>
         <div className="space-y-6">
           <UIControls
@@ -644,14 +736,31 @@ export default function ConfiguratorClient({ katanaId, basePrice }: Configurator
             <p className="mt-2 text-xs text-white/60">
               Base price {basePrice} EUR. Ajustez les curseurs pour visualiser l&apos;impact sur le devis.
             </p>
-            <button
-              type="button"
-              onClick={requestQuote}
-              className="btn-primary mt-4"
-              disabled={status === "loading"}
-            >
-              {status === "loading" ? "Calcul en cours..." : "Demander un devis"}
-            </button>
+            <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <button
+                type="button"
+                onClick={requestQuote}
+                className="btn-primary"
+                disabled={status === "loading"}
+              >
+                {status === "loading" ? "Calcul en cours..." : "Demander un devis"}
+              </button>
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="inline-flex items-center justify-center rounded-full border border-white/20 bg-black/60 px-5 py-2 text-sm font-semibold uppercase tracking-[0.3em] text-white transition hover:border-emberGold hover:text-emberGold disabled:cursor-not-allowed disabled:border-white/10 disabled:text-white/40"
+                disabled={!hasUser}
+              >
+                Ajouter au panier
+              </button>
+            </div>
+            {!hasUser ? (
+              <p className="mt-3 text-xs text-white/60">
+                Connectez-vous pour utiliser le panier et finaliser votre commande.
+              </p>
+            ) : null}
+            {cartMessage ? <p className="mt-3 text-xs text-emberGold">{cartMessage}</p> : null}
+            {cartError ? <p className="mt-3 text-xs text-katanaRed">{cartError}</p> : null}
             {errorMessage ? (
               <p className="mt-3 text-xs text-katanaRed">{errorMessage}</p>
             ) : null}

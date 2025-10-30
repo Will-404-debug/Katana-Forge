@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckoutPayloadSchema, type CheckoutPayload } from "@/lib/validation/checkout";
 import { computeLineTotals, sumCents, toEuroString } from "@/lib/money";
 import { csrfHeader } from "@/lib/csrf";
+import { useCartStore } from "@/lib/stores/cart-store";
 import AddressForm from "./components/AddressForm";
 import OrderSummary from "./components/OrderSummary";
 
@@ -40,6 +41,9 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
     mode: "onChange",
     defaultValues,
   });
+  const cartItems = useCartStore((state) => state.items);
+  const cartShippingCents = useCartStore((state) => state.shippingCents);
+  const clearCart = useCartStore((state) => state.clear);
 
   const {
     handleSubmit,
@@ -52,6 +56,26 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
   const billSame = useWatch({ control: methods.control, name: "billSame" });
   const items = useWatch({ control: methods.control, name: "items" });
   const shippingCents = useWatch({ control: methods.control, name: "shippingCents" });
+
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      return;
+    }
+
+    setValue(
+      "items",
+      cartItems.map(({ id, ...item }) => item),
+      { shouldValidate: true },
+    );
+  }, [cartItems, setValue]);
+
+  useEffect(() => {
+    if (!Number.isFinite(cartShippingCents) || shippingCents === cartShippingCents) {
+      return;
+    }
+
+    setValue("shippingCents", cartShippingCents, { shouldValidate: true });
+  }, [cartShippingCents, setValue, shippingCents]);
 
   const hasItems = items.length > 0;
 
@@ -112,6 +136,7 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
       }
 
       const result = await response.json();
+      clearCart();
       setStatus({
         type: "idle",
         message: `Devis ${result.number} envoyé. Un PDF a été expédié à ${payload.email}.`,
