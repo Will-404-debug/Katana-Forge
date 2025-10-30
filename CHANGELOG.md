@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.4...katana-forge-v1.9.0) (2025-10-30)
+
+
+### Features
+
+* **cart:** add cart page, stabilize configurator canvas, and cap qua… ([27860c2](https://github.com/Will-404-debug/Katana-Forge/commit/27860c2a2c762fe027ab4326fdcb221c014a419d))
+* **cart:** add cart page, stabilize configurator canvas, and cap quantities ([dea24ff](https://github.com/Will-404-debug/Katana-Forge/commit/dea24ffa278bc205c6bed49c1e58a51fdb06e4d2))
+
 ## [1.8.4](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.3...katana-forge-v1.8.4) (2025-10-29)
 
 
