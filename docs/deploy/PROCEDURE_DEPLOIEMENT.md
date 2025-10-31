@@ -24,8 +24,12 @@ Créez un fichier `.env` à partir de `.env.example` et renseignez les valeurs s
 | `STRIPE_SECRET_KEY` | Clé privée Stripe. | ✅ si paiement en ligne activé | Clé LIVE ou TEST selon l'environnement. |
 | `STRIPE_WEBHOOK_SECRET` | Secret du webhook Stripe. | ✅ si webhooks configurés | Généré via `stripe listen` ou le tableau de bord Stripe. |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` | Paramètres SMTP pour l'envoi de courriels. | ✅ si livraison e-mail en production | Pour Mailhog, utiliser `localhost:1025` sans authentification. |
-| `MAIL_FROM` | Adresse d'expédition. | ✅ | Format recommandé : `Nom <adresse@domaine>` |
-| `PDF_STORAGE_DIR` | Répertoire où stocker les devis PDF générés. | ✅ | Assurez-vous que le dossier est inscriptible. |
+| `MAIL_FROM` | Adresse d'expédition. | ✅ | Format recommandé : `Nom <adresse@domaine>` |
+| `PDF_STORAGE_PROVIDER` | Backend de stockage des PDF (`fs`, `gcs`, `blob`). | ✅ | Utiliser `blob` sur Vercel, `fs` uniquement en local. |
+| `PDF_STORAGE_DIR` | Répertoire où stocker les devis PDF générés. | ✅ | Assurez-vous que le dossier est inscriptible pour `fs`. |
+| `PDF_STORAGE_BUCKET` | Nom du bucket GCS. | Optionnel | Obligatoire avec le provider `gcs`. |
+| `PDF_STORAGE_PREFIX` | Préfixe commun pour les chemins distants. | Optionnel | Peut servir pour `gcs` et `blob` (ex. `quotes`). |
+| `BLOB_READ_WRITE_TOKEN` | Jeton d'accès Vercel Blob. | ✅ si provider `blob` | Généré via le dashboard Vercel Blob. |
 | `RESEND_API_KEY`, `FEATURE_RESEND` | Configuration du provider Resend. | Optionnel | Mettre `FEATURE_RESEND=true` pour activer l'envoi via Resend. |
 | `COMPANY_*` | Informations légales affichées sur les devis/factures. | ✅ | Adapter aux coordonnées de votre entreprise. |
 

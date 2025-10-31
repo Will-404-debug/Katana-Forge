@@ -16,6 +16,8 @@
     "dev:webhook": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.17.2",
+    "@vercel/blob": "^0.24.0",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.16.3",
     "@react-pdf/renderer": "^4.3.1",
