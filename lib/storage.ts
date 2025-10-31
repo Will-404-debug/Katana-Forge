@@ -25,7 +25,6 @@ export const storeQuotePdf = async (input: { quoteNumber: string; buffer: Buffer
   if (isBlobProvider()) {
     const key = buildStorageKey(filename);
     const blob = await put(key, buffer, {
-      access: "private",
       contentType: "application/pdf",
       token: requireBlobToken(),
     });
