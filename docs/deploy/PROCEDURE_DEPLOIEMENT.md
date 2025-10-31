@@ -30,6 +30,8 @@ Créez un fichier `.env` à partir de `.env.example` et renseignez les valeurs s
 | `PDF_STORAGE_BUCKET` | Nom du bucket GCS. | Optionnel | Obligatoire avec le provider `gcs`. |
 | `PDF_STORAGE_PREFIX` | Préfixe commun pour les chemins distants. | Optionnel | Peut servir pour `gcs` et `blob` (ex. `quotes`). |
 | `BLOB_READ_WRITE_TOKEN` | Jeton d'accès Vercel Blob. | ✅ si provider `blob` | Généré via le dashboard Vercel Blob. |
+
+> ℹ️ **Note** : les blobs Vercel sont servis via une URL aléatoire mais restent publics. Pour limiter l’exposition, conservez les liens dans la base et renouvelez-les si besoin.
 | `RESEND_API_KEY`, `FEATURE_RESEND` | Configuration du provider Resend. | Optionnel | Mettre `FEATURE_RESEND=true` pour activer l'envoi via Resend. |
 | `COMPANY_*` | Informations légales affichées sur les devis/factures. | ✅ | Adapter aux coordonnées de votre entreprise. |
 
