@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.11.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.10.0...katana-forge-v1.11.0) (2025-10-31)
+
+
+### Features
+
+* **storage:** add explicit GCS client and test upload route ([f0a2f72](https://github.com/Will-404-debug/Katana-Forge/commit/f0a2f72105fc8cee6ed8ad948e87bf74b68b590e))
+* **storage:** add explicit GCS client and test upload route ([5ef8138](https://github.com/Will-404-debug/Katana-Forge/commit/5ef8138be0b093e8e9b44ee543e06c81cb755ed1))
+
+
+### Bug Fixes
+
+* **storage:** restore required access flag for blob uploads ([78ce854](https://github.com/Will-404-debug/Katana-Forge/commit/78ce854f50e93de1629b417537ae06c2fb7dcd66))
+* **storage:** restore required access flag for blob uploads ([2e152be](https://github.com/Will-404-debug/Katana-Forge/commit/2e152be7c05352ecfb4a564ad1c726f189a244b5))
+
 ## [1.10.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.9.1...katana-forge-v1.10.0) (2025-10-31)
 
 
