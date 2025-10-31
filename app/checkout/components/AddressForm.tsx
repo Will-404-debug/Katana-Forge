@@ -30,6 +30,9 @@ const AddressForm = ({ prefix }: Props) => {
 
   const field = (name: AddressField) => `${prefix}.${name}` as const;
 
+  const inputClass =
+    "mt-1 rounded-md border border-neutral-300 bg-white px-3 py-2 text-neutral-900 placeholder:text-neutral-400 focus:border-black focus:outline-none";
+
   return (
     <div className="grid gap-4">
       <div className="flex flex-col">
@@ -40,7 +43,7 @@ const AddressForm = ({ prefix }: Props) => {
           id={`${prefix}-company`}
           type="text"
           {...register(field("company"))}
-          className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+          className={inputClass}
           autoComplete="organization"
         />
         {errorMessage("company") ? (
@@ -56,7 +59,7 @@ const AddressForm = ({ prefix }: Props) => {
           id={`${prefix}-vatNumber`}
           type="text"
           {...register(field("vatNumber"))}
-          className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+          className={inputClass}
           autoComplete="tax-number"
         />
         {errorMessage("vatNumber") ? (
@@ -72,7 +75,7 @@ const AddressForm = ({ prefix }: Props) => {
           id={`${prefix}-line1`}
           type="text"
           {...register(field("line1"))}
-          className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+          className={inputClass}
           autoComplete="address-line1"
         />
         {errorMessage("line1") ? (
@@ -88,7 +91,7 @@ const AddressForm = ({ prefix }: Props) => {
           id={`${prefix}-line2`}
           type="text"
           {...register(field("line2"))}
-          className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+          className={inputClass}
           autoComplete="address-line2"
         />
         {errorMessage("line2") ? (
@@ -105,7 +108,7 @@ const AddressForm = ({ prefix }: Props) => {
             id={`${prefix}-postalCode`}
             type="text"
             {...register(field("postalCode"))}
-            className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+            className={inputClass}
             autoComplete="postal-code"
           />
           {errorMessage("postalCode") ? (
@@ -121,7 +124,7 @@ const AddressForm = ({ prefix }: Props) => {
             id={`${prefix}-city`}
             type="text"
             {...register(field("city"))}
-            className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+            className={inputClass}
             autoComplete="address-level2"
           />
           {errorMessage("city") ? (
@@ -137,7 +140,7 @@ const AddressForm = ({ prefix }: Props) => {
         <select
           id={`${prefix}-country`}
           {...register(field("country"))}
-          className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+          className={inputClass}
           autoComplete="country-name"
         >
           {COUNTRIES.map((country) => (
