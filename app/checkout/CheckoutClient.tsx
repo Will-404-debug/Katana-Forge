@@ -16,6 +16,9 @@ import OrderSummary from "./components/OrderSummary";
 
 const POLICY_VERSION = "2025-01";
 
+const INPUT_CLASS =
+  "mt-1 rounded-md border border-neutral-300 bg-white px-3 py-2 text-neutral-900 placeholder:text-neutral-400 focus:border-black focus:outline-none";
+
 type CheckoutStatus =
   | { type: "idle"; message?: string; error?: string }
   | { type: "quote" }
@@ -56,6 +59,7 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
   const billSame = useWatch({ control: methods.control, name: "billSame" });
   const items = useWatch({ control: methods.control, name: "items" });
   const shippingCents = useWatch({ control: methods.control, name: "shippingCents" });
+  const shippingAddress = useWatch({ control: methods.control, name: "ship" });
 
   useEffect(() => {
     if (cartItems.length === 0) {
@@ -80,11 +84,16 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
   const hasItems = items.length > 0;
 
   useEffect(() => {
-    if (billSame) {
-      const shippingAddress = getValues("ship");
-      setValue("bill", shippingAddress, { shouldValidate: false });
+    if (!billSame) {
+      return;
     }
-  }, [billSame, getValues, setValue]);
+
+    if (!shippingAddress) {
+      return;
+    }
+
+    setValue("bill", { ...shippingAddress }, { shouldValidate: false });
+  }, [billSame, setValue, shippingAddress]);
 
   const [status, setStatus] = useState<CheckoutStatus>({ type: "idle" });
 
@@ -213,7 +222,7 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
                 id="firstName"
                 type="text"
                 {...methods.register("firstName")}
-                className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+                className={INPUT_CLASS}
                 autoComplete="given-name"
               />
               {errors.firstName ? (
@@ -229,7 +238,7 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
                 id="lastName"
                 type="text"
                 {...methods.register("lastName")}
-                className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+                className={INPUT_CLASS}
                 autoComplete="family-name"
               />
               {errors.lastName ? (
@@ -247,7 +256,7 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
                 id="email"
                 type="email"
                 {...methods.register("email")}
-                className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+                className={INPUT_CLASS}
                 autoComplete="email"
               />
               {errors.email ? (
@@ -263,7 +272,7 @@ const CheckoutClient = ({ defaultValues, legalLinks }: Props) => {
                 id="phone"
                 type="tel"
                 {...methods.register("phone")}
-                className="mt-1 rounded-md border border-neutral-300 px-3 py-2 focus:border-black focus:outline-none"
+                className={INPUT_CLASS}
                 autoComplete="tel"
               />
               {errors.phone ? (

@@ -173,7 +173,7 @@ const QuoteDocument = (input: QuotePdfInput) => {
           <View style={styles.titleBox}>
             <Text style={styles.label}>Devis</Text>
             <Text style={styles.bold}>{input.number}</Text>
-            <Text>Émis le {issuedOn}</Text>
+            <Text>{`Émis le ${issuedOn}`}</Text>
           </View>
         </View>
 
@@ -249,8 +249,7 @@ const QuoteDocument = (input: QuotePdfInput) => {
         <View style={styles.footer}>
           <Text>
             RGPD: vos données sont traitées pour la gestion de votre commande et conservées
-            pour une durée de 3 ans. Vous pouvez exercer vos droits en nous contactant à{" "}
-            {input.company.email}.
+            pour une durée de 3 ans. Vous pouvez exercer vos droits en nous contactant à {input.company.email}.
           </Text>
           <Text>
             Conditions générales, politique de confidentialité et mentions légales disponibles

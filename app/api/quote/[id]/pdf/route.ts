@@ -18,7 +18,7 @@ export async function GET(request: Request, context: { params: { id: string } })
 
   // TODO: replace email confirmation with signed token when customer accounts are available.
   if (!emailParam || emailParam.toLowerCase() !== quote.customer.email.toLowerCase()) {
-    return Response.json({ error: "Acces non autorise a ce devis" }, { status: 403 });
+    return Response.json({ error: "Accès non autorisé à ce devis" }, { status: 403 });
   }
 
   try {
