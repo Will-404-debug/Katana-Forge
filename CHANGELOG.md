@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.9.0...katana-forge-v1.9.1) (2025-10-31)
+
+
+### Bug Fixes
+
+* **checkout:** make inputs readable and sync billing address ([3b98bd0](https://github.com/Will-404-debug/Katana-Forge/commit/3b98bd01faca5b2c94f83d8bb5f11f60966933ef))
+* **checkout:** make inputs readable and sync billing address ([ab940db](https://github.com/Will-404-debug/Katana-Forge/commit/ab940db6ea760497095060a086b8eb74ef259bf8))
+
 ## [1.9.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.8.4...katana-forge-v1.9.0) (2025-10-30)
 
 
