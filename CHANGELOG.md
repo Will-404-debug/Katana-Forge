@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.10.0](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.9.1...katana-forge-v1.10.0) (2025-10-31)
+
+
+### Features
+
+* **storage:** add blob-backed quote PDF storage ([8bcfd15](https://github.com/Will-404-debug/Katana-Forge/commit/8bcfd154f28823d867600b63c88eadda6ff3fa0f))
+* **storage:** add blob-backed quote PDF storage ([8cb58dd](https://github.com/Will-404-debug/Katana-Forge/commit/8cb58dd37080952e2d1d4e880d48f95cb7924eec))
+
+
+### Bug Fixes
+
+* **storage:** align blob uploads with Vercel access rules ([b323a9a](https://github.com/Will-404-debug/Katana-Forge/commit/b323a9a50cdc5023010106a8efac1ade1de17139))
+* **storage:** align blob uploads with Vercel access rules ([663d125](https://github.com/Will-404-debug/Katana-Forge/commit/663d125f6f7f11b82c23cef6270ae4d7e79961a3))
+
 ## [1.9.1](https://github.com/Will-404-debug/Katana-Forge/compare/katana-forge-v1.9.0...katana-forge-v1.9.1) (2025-10-31)
 
 
